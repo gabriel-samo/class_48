@@ -1,0 +1,12 @@
+input{
+    display: block;
+    margin: 3vh auto;
+}
+
+input:valid[type=password]{
+    background-color: blue;
+}
+
+input:invalid[type=password]{
+    background-color: red;
+}

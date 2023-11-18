@@ -1,0 +1,9 @@
+li[data-dir="up"]{
+    list-style-type: '\2191';
+    color: green;
+}
+
+li[data-dir="down"]{
+    list-style-type: '\2193';
+    color: red;
+}

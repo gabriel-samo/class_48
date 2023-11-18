@@ -1,0 +1,49 @@
+/* body */
+$bodyTextAlign: center;
+
+/* ul */
+$ulListStyle: circle;
+$ulMargin: 5vh auto;
+$ulBorder: double 1px black;
+$ulShadow: 0px 0px 2px 2px grey;
+$ulBorderRadius: 5px;
+$ulWidth: 50vw;
+$ulPadding: ;
+
+/* div */
+$divBorder: 1px solid black;
+$divBorderRadius: 3px;
+$divShadow: 5px 5px 2px 2px grey;
+$divWidth: 60vw;
+$divMargin: 5vh auto;
+
+/* input */
+$inputDisplay: block;
+$inputMargin: 3vh auto;
+
+body{
+    text-align: $bodyTextAlign;
+}
+
+ul{
+    list-style: $ulListStyle;
+    margin: $ulMargin;
+    border: $ulBorder;
+    border-radius: $ulBorderRadius;
+    box-shadow: $ulShadow;
+    width: $ulWidth;
+    padding: $ulPadding;
+}
+
+.container{
+    border: $divBorder;
+    border-radius: $divBorderRadius;
+    box-shadow: $divShadow;
+    width: $divWidth;
+    margin: $divMargin;
+}
+
+input{
+    display: $inputDisplay;
+    margin: $inputMargin;
+}

@@ -1,0 +1,56 @@
+/* Body style*/
+$bodyBackGround: antiquewhite;
+$bodyTextAlign: center;
+$bodyFontSize: 20px;
+
+/* Caption style*/
+$captionFontWeight: 500;
+$captionFontSize: 30px;
+$captionMarginBottom: 5vh;
+$captionTextTransform: uppercase;
+
+/* Table */
+$tableBorderRadius: 5px;
+$tableBackGround: rgb(190, 230, 230);
+$tableBorder: dashed 2px black;
+$tableMargin: 5vh auto;
+
+/* td */
+$tdBorderRadius: 5px;
+$tdBorder: solid 1.5px black;
+$tdPadding: 2vh;
+
+/* Hover Effect on td */
+$hoverBackGroundColor: aqua;
+$hoverShadow:  0px 0px 5px 1px yellow;
+
+body{
+    background-color: $bodyBackGround;
+    text-align: $bodyTextAlign;
+    font-size: $bodyFontSize;
+}
+
+caption{
+    font-weight: $captionFontWeight;
+    font-size: $captionFontSize;
+    margin-bottom: $captionMarginBottom;
+}
+
+table{
+    border-radius: $tdBorderRadius;
+    background-color: $tableBackGround;
+    border: $tableBorder;
+    margin: $tableMargin;
+}
+
+td{
+    border-radius: $tdBorderRadius;
+    border: $tdBorder;
+    padding: $tdPadding;
+}
+
+tbody:hover td[rowspan],
+tr:hover td{
+    background-color: $hoverBackGroundColor;
+    box-shadow: $hoverShadow;
+}

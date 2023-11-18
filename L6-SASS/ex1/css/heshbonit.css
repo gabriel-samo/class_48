@@ -1,0 +1,37 @@
+/* Body style*/
+/* Caption style*/
+/* Table */
+/* td */
+/* Hover Effect on td */
+body {
+  background-color: antiquewhite;
+  text-align: center;
+  font-size: 20px;
+}
+
+caption {
+  font-weight: 500;
+  font-size: 30px;
+  margin-bottom: 5vh;
+}
+
+table {
+  border-radius: 5px;
+  background-color: rgb(190, 230, 230);
+  border: dashed 2px black;
+  margin: 5vh auto;
+}
+
+td {
+  border-radius: 5px;
+  border: solid 1.5px black;
+  padding: 2vh;
+}
+
+tbody:hover td[rowspan],
+tr:hover td {
+  background-color: aqua;
+  box-shadow: 0px 0px 5px 1px yellow;
+}
+
+/*# sourceMappingURL=heshbonit.css.map */
