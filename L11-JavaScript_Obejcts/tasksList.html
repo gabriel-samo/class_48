@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>work work work</title>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        .lineThrough{
+            text-decoration-line: line-through;
+            color: rgba(40,40,40,0.5)
+        }
+    </style>
+    <script defer src="tasksList.js"></script>
+</head>
+
+<body>
+    <h1>Todo list</h1>
+    <hr />
+    <input type="text" placeholder="new task" id="taskName" /><br /><br />
+    <input type="date" id="taskDate" /><br /><br />
+    <input type="button" value="add task" onclick="addTask()" /><br /><br />
+    <input type="button" value="clear all tasks" onclick="clearTasks()" />
+    <hr />
+    <div id="taskList"></div>
+</body>
+
+</html>

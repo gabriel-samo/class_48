@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <script defer src="index2.js"></script>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            padding: 5px;
+            margin: 5px;
+        }
+
+        input[type='number']{
+            width: 3em;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+        <table>
+            <tr>
+                <td>#</td>
+                <td>Name of the assainment</td>
+                <td>Date to complete</td>
+                <td>Is completed</td>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>#</td>
+                    <td>
+                        <input type="text" id="name">
+                    </td>
+                    <td>
+                        <input type="date" id="date">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="state">
+                    </td>
+                    <td>
+                        <button id="add" onclick="addTask();">Add</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
