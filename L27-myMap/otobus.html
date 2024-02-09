@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <title>tagil 3</title>
+    <style>
+        * {
+            text-align: center;
+        }
+
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+
+        td,
+        th {
+            border: 1px solid black;
+            padding: 10px;
+        }
+
+        .modal {
+            display: none;
+            height: 3em;
+            width: 50.5vw;
+            background-image: url('https://i.stack.imgur.com/FhHRx.gif');
+            background-repeat: no-repeat;
+        }
+
+        body.loading .modal {
+            display: block;
+        }
+
+        #map {
+            height: 500px;
+        }
+    </style>
+    <script defer src="otubus.js"></script>
+</head>
+<h1>Targil 3</h1>
+<div dir="rtl">
+    <input id="cityName" type="text" placeholder="הקלידו את שם העיר">
+    <br />
+    <br />
+    <button id="getBus">לקבלת תחנות</button>
+    <br />
+    <br />
+    <div class="modal"></div>
+</div>
+
+<div id="map"></div>
+
+<body>
+</body>
+
+</html>

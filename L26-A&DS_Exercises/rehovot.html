@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <title>tagil 2</title>
+    <style>
+        * {
+            text-align: center;
+        }
+
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+
+        td,
+        th {
+            border: 1px solid black;
+            padding: 10px;
+        }
+    </style>
+</head>
+<h1>Targil 2</h1>
+<table>
+    <thead>
+        <th>City</th>
+        <th>Count of streets</th>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<body>
+
+    <script>
+        const limit = '100000';
+        const url = `https://data.gov.il/api/3/action/datastore_search?resource_id=9ad3862c-8391-4b2f-84a4-2d4c68625f4b&limit=${limit}`
+        $.ajax({
+            url: url,
+            method: 'GET',
+            dataType: "json",
+            success: (data) => {
+                let response = data.result.records;
+                // console.log(response[0].שם_ישוב)
+                const cities = {};
+
+                for (let i = 0; i < response.length; i++) {
+                    cities[response[i].שם_ישוב] = (cities[response[i].שם_ישוב] || 0) + 1;
+                }
+
+                // console.log(cities);
+
+                for (let city in cities) {
+                    $('tbody').append(`
+                        <tr>
+                            <td>${city}</td>
+                            <td>${cities[city]}</td>
+                        </tr>
+                    `)
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

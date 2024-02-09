@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <title>tagil 3</title>
+    <style>
+        * {
+            text-align: center;
+        }
+
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+
+        td,
+        th {
+            border: 1px solid black;
+            padding: 10px;
+        }
+
+        .modal {
+            display: none;
+            height: 3em;
+            width: 50.5vw; 
+            background-image: url('https://i.stack.imgur.com/FhHRx.gif');
+            background-repeat: no-repeat;
+        }
+
+        body.loading .modal {
+            display: block;
+        }
+    </style>
+</head>
+<h1>Targil 3</h1>
+<div dir="rtl">
+    לחצו לקבלת תחנות בעיר שרשמתם:
+    <br />
+    <br />
+    <input id="cityName" type="text" placeholder="הקלידו את שם העיר">
+    <br />
+    <br />
+    <button id="getBus">לקבלת תחנות</button>
+    <br />
+    <br />
+    <div class="modal"></div>
+</div>
+<table>
+    <thead>
+        <th>עיר</th>
+        <th>שכונה</th>
+        <th>קו אורך</th>
+        <th>קו רוחב</th>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<body>
+
+    <script>
+        function getBusStation(city) {
+            const url = `https://data.gov.il/api/3/action/datastore_search?resource_id=e873e6a2-66c1-494f-a677-f5e77348edb0&q=${city}`
+            $.ajax({
+                url: url,
+                beforeSend: function () { $('body').addClass("loading"); },
+                complete: function () { $('body').removeClass("loading"); },
+                method: 'GET',
+                dataType: "json",
+                success: (data) => {
+                    let response = data.result.records;
+                    // console.log(response);
+                    const busStations = new Array();
+
+                    for (let i = 0; i < response.length; i++) {
+                        busStations.push({
+                            cityName: response[i].CityName,
+                            neighborhood: response[i].Neighborhood,
+                            lat: response[i].Lat,
+                            long: response[i].Long,
+                        })
+                    }
+
+                    for (let city of busStations) {
+                        $('tbody').append(`
+                            <tr>
+                                <td>${city.cityName}</td>
+                                <td>${city.neighborhood}</td>
+                                <td>${city.lat}</td>
+                                <td>${city.long}</td>
+                            </tr>
+                        `)
+                    }
+                }
+            })
+        }
+
+        $('#getBus').on('click', () => {
+            $('tbody').text('');
+            getBusStation($('#cityName').val());
+            $('#cityName').val('');
+        })
+    </script>
+</body>
+
+</html>

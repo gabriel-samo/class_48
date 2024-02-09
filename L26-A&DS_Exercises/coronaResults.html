@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <title>tagil 1</title>
+    <style>
+        * {
+            text-align: center;
+        }
+
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+
+        td,
+        th {
+            border: 1px solid black;
+            padding: 10px;
+        }
+    </style>
+</head>
+<h1>Targil 1</h1>
+<table>
+    <thead>
+        <th>Corona Result</th>
+        <th>Count</th>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<body>
+
+    <script>
+        $.ajax({
+            url: 'https://data.gov.il/api/3/action/datastore_search?resource_id=a9588029-8dd6-4c6f-b4ff-e8ca6413642f',
+            method: 'GET',
+            dataType: "json",
+            success: (data) => {
+                response = data.result.records;
+                const coronaResults = {};
+
+                for (let i = 0; i < response.length; i++) {
+                    coronaResults[response[i].corona_result] = (coronaResults[response[i].corona_result] || 0) + 1
+                }
+
+                for (let result in coronaResults) {
+                    $('tbody').append(`
+                        <tr>
+                            <td>${result}</td>
+                            <td>${coronaResults[result]}</td>
+                        </tr>
+                    `)
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

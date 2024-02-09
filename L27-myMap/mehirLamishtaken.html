@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <title>מחיר למשתכן על פי עיר</title>
+    <style>
+        * {
+            text-align: center;
+        }
+
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+
+        td,
+        th {
+            border: 1px solid black;
+            padding: 10px;
+        }
+
+        .modal {
+            display: none;
+            height: 3em;
+            width: 50.5vw; 
+            background-image: url('https://i.stack.imgur.com/FhHRx.gif');
+            background-repeat: no-repeat;
+        }
+
+        body.loading .modal {
+            display: block;
+        }
+    </style>
+    <script defer src="mehirLamishtaken.js"></script>
+</head>
+<body>
+    <h1>מחיר למשתכן על פי עיר</h1>
+    <div dir="rtl">
+        <select name="cityName" id="cityName">
+            <!-- <option value="חיפה">חיפה</option>
+            <option value="תל אביב">תל אביב</option> -->
+        </select>
+        <br />
+        <br />
+        <button id="getAppartments">לקבלת הצעות</button>
+        <br />
+        <br />
+        <div class="modal"></div>
+    </div>
+    <table dir="rtl">
+        <thead>
+            <th>שכונה</th>
+            <th>מחיר למטר</th>
+            <th>סטטוס פרויקט</th>
+            <th>כמות מעוניינים</th>
+        </thead>
+        <tbody></tbody>
+    </table>
+</body>
+</html>
