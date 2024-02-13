@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מערכת בחירות</title>
+    <style>
+        body {
+            text-align: center;
+            direction: rtl;
+        }
+
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+            display: inline;
+        }
+
+        td,
+        th {
+            border: 1px solid black;
+            padding: 5px;
+        }
+
+        td{
+            white-space:pre;
+        }
+    </style>
+    <script defer src="script.js"></script>
+    <script defer src="one.js"></script>
+    <script defer src="many.js"></script>
+    <script defer src="regular.js"></script>
+</head>
+<body>
+    <h1>בדיקת בחירות מקומיות</h1>
+    <button>משוך נתונים</button>
+    <br/>
+    <br/>
+        <table dir="rtl">
+            <caption>מתומדד אחד</caption>
+            <thead>
+                <th>מחוז</th>
+                <th>עיר</th>
+                <th>מס' מתומדדים</th>
+                <th>מתומדדים</th>
+            </thead>
+            <tbody id="oneCand"></tbody>
+        </table>
+
+        <table dir="rtl">
+            <caption>יותר מ-5 מתמודדים</caption>
+            <thead>
+                <th>מחוז</th>
+                <th>עיר</th>
+                <th>מס' מתומדדים</th>
+                <th>מתומדדים</th>
+            </thead>
+            <tbody id="manyCand"></tbody>
+        </table>
+
+        <table dir="rtl">
+            <caption>מס' תקין של מתמודדים</caption>
+            <thead>
+                <th>מחוז</th>
+                <th>עיר</th>
+                <th>מס' מתומדדים</th>
+                <th>מתומדדים</th>
+            </thead>
+            <tbody id="regCand"></tbody>
+        </table>
+</body>
+</html>
