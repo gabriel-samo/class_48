@@ -25,7 +25,7 @@
         .modal {
             display: none;
             height: 3em;
-            width: 50.5vw; 
+            width: 50.5vw;
             background-image: url('https://i.stack.imgur.com/FhHRx.gif');
             background-repeat: no-repeat;
         }
@@ -35,30 +35,30 @@
         }
     </style>
 </head>
-<h1>Targil 3</h1>
-<div dir="rtl">
-    לחצו לקבלת תחנות בעיר שרשמתם:
-    <br />
-    <br />
-    <input id="cityName" type="text" placeholder="הקלידו את שם העיר">
-    <br />
-    <br />
-    <button id="getBus">לקבלת תחנות</button>
-    <br />
-    <br />
-    <div class="modal"></div>
-</div>
-<table>
-    <thead>
-        <th>עיר</th>
-        <th>שכונה</th>
-        <th>קו אורך</th>
-        <th>קו רוחב</th>
-    </thead>
-    <tbody></tbody>
-</table>
 
 <body>
+    <h1>Targil 3</h1>
+    <div dir="rtl">
+        לחצו לקבלת תחנות בעיר שרשמתם:
+        <br />
+        <br />
+        <input id="cityName" type="text" placeholder="הקלידו את שם העיר">
+        <br />
+        <br />
+        <button id="getBus">לקבלת תחנות</button>
+        <br />
+        <br />
+        <div class="modal"></div>
+    </div>
+    <table>
+        <thead>
+            <th>עיר</th>
+            <th>שכונה</th>
+            <th>קו אורך</th>
+            <th>קו רוחב</th>
+        </thead>
+        <tbody></tbody>
+    </table>
 
     <script>
         function getBusStation(city) {

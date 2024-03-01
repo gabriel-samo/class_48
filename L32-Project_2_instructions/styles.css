@@ -1,0 +1,171 @@
+body {
+    text-align: center;
+    background-color: rgb(40, 40, 40);
+    color: whitesmoke
+}
+
+/* Start | spinner loading animation */
+#overlay{	
+    position: fixed;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+    height:100%;
+    display: none;
+    background: rgba(0,0,0,0.6);
+}
+
+  .cv-spinner {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+}
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px #ddd solid;
+    border-top: 4px #2e93e6 solid;
+    border-radius: 50%;
+    animation: sp-anime 0.8s infinite linear;
+}
+
+  @keyframes sp-anime {
+    100% { 
+      transform: rotate(360deg); 
+    }
+}
+
+  .is-hide{
+    display:none;
+}
+/* End | spinner loading animation */
+
+#headline {
+    padding: 1em;
+    width: 100%;
+    /* background-color: black; */
+    border-bottom: solid whitesmoke 3px;
+    background: rgb(60,60,60);
+    background: linear-gradient(140deg, rgba(60,60,60,1) 0%, rgba(0,0,0,1) 100%);
+}
+
+h1 {
+    text-align: start;
+    margin-left: 1em;
+    color: gainsboro;
+}
+
+.logo {
+    background-image: url("./images/bitcoins-logo.jpg");
+    background-size: cover;
+    height: 128px;
+    width: 128px;
+    position: absolute;
+    right: 0;
+    margin-top: -4.5rem;
+    background-color: black;
+    border-bottom: solid whitesmoke 3px;
+}
+
+.logo-border {
+    border-left: solid whitesmoke 3px;
+    position: absolute;
+    top: 70%;
+    bottom: -1.5%;
+    right: 100%;
+}
+
+.parallax {
+    background-image: url("./images/bitcoinBlackCrystals.jpg");
+    min-height: 60vh;
+    min-width: 100%;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#cardsBody {
+    margin: 1rem 0;
+}
+
+.card {
+    text-align: start;
+}
+
+.active {
+    background-color: rgb(33, 33, 33) !important;
+    color: rgb(220,220,220) !important;
+    border-radius: 9px;
+}
+
+.active:hover {
+    background-color: rgb(40, 40, 40) !important;
+    color: rgb(255,255,255) !important;
+}
+
+.nav-item,
+input[role="switch"]{
+    cursor: pointer;
+}
+
+.modal-content{
+    text-align: center;
+    background-color: rgb(60,60,60);
+    color: whitesmoke;
+}
+
+.modal-title{
+    margin-left: auto;
+}
+
+.coinTitle{
+    margin-left: 44.5%;
+}
+
+.progress {
+    display: none;
+}
+
+body.loading .progress{
+    display: block;
+}
+
+/* Laptops */
+@media (max-width: 1024px) {
+    .logo {
+        left: 87.5%;
+        margin-top: -4.3em;
+    }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+    .logo {
+        left: 83.3%;
+        margin-top: -4rem;
+    }
+
+    .logo-img {
+        top: 64%;
+        bottom: -1.5%;
+        right: 100%;
+    }
+}
+
+/* Mobile Phone */
+@media (max-width: 767.98px) {
+    .logo {
+        display: none;
+    }
+}
+
+
+@media (max-width: 575.98px){
+    #navbar{
+        max-width: 20rem;
+        margin: 0 auto;
+    }
+}
