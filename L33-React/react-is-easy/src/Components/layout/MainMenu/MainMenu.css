@@ -1,0 +1,10 @@
+.MainMenu {}
+
+.MainMenu>span {
+    padding: 0;
+}
+
+.MainMenu>hr {
+    padding: 0;
+    margin: 0;
+}

@@ -27,6 +27,7 @@ if (now.getTime() >= oneDay || !localStorage.getItem('cryptoCoins')) {
         },
         success: (result) => {
             for (let coin of result) {
+                localStorage.removeItem('cryptoCoins');
                 // adding a coin only if the first letter is not a number in id, symbol and name fileds and the symbol is 3 letters.
                 if (Number.isNaN(parseInt(coin.symbol[0])) && Number.isNaN(parseInt(coin.id[0])) && Number.isNaN(parseInt(coin.name[0])) && coin.symbol.length === 3) {
                     cryptoCoins.push(coin);
@@ -42,7 +43,7 @@ if (now.getTime() >= oneDay || !localStorage.getItem('cryptoCoins')) {
 } else homePage();
 
 function homePage() {
-    // injecting the clear all choises button 
+    // injecting the clear all choices button
     $('#clearAllButton').html(`
         <button id="clearPickedCoins" class="btn btn-light col-auto mt-4" onclick="clearPickedCoins()">Clear All Picked Coins</button>
     `)
@@ -50,11 +51,11 @@ function homePage() {
     let cardsBody = '';
     for (let index = 0; index <= 100; index++) {
         cardsBody += `
-        <div class="card border-light text-bg-dark col-md-4 col-xl-4 col-lg-4 col-sm-12" data-symbol="${cryptoCoins[index].symbol}">
+        <div class="card border-light text-bg-dark col-md-4 col-xl-4 col-lg-4 col-sm-12">
             <div class="mx-3 mt-3 d-flex justify-content-between">
                 <h5 class="card-title">${cryptoCoins[index].symbol.toUpperCase()}</h5>
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" ${cryptoCoins[index].picked ? 'checked' : ''}>
+                    <input id="${cryptoCoins[index].id}" class="form-check-input" type="checkbox" role="switch" ${cryptoCoins[index].picked ? 'checked' : ''}>
                 </div>
             </div>
             <div class="card-body pt-0">
@@ -69,20 +70,134 @@ function homePage() {
     pickingCoins();
 }
 
+// implementing Live Reports Page logic
 function liveReportsPage() {
-    $('#body').html(`
-        <p>Live Reports graphs page</p>
-    `);
-    pickingCoins();
+    $('#clearAllButton').html(``);
+    $('#body').html(`<div id="chartContainer" class="mb-4" style="height: 370px; width: 100%;"></div>`);
+    // declaring price points arrays dynamically depending on the pickedCoins array length 
+    for (let index = 0; index < pickedCoins.length; index++) {
+        eval(`var dataPoints${index + 1} = [];`)
+    }
+    // declaring "Options" Object
+    var options = {
+        title: {
+            text: "Crypto Currency"
+        },
+        axisX: {
+            title: "Chart updates every 2 seconds"
+        },
+        axisY: {
+            suffix: "$"
+        },
+        toolTip: {
+            shared: true
+        },
+        legend: {
+            cursor: "pointer",
+            verticalAlign: "top",
+            fontSize: 22,
+            fontColor: "dimGrey",
+            itemclick: toggleDataSeries
+        },
+        data: []
+    };
+    // array that depends on pickedCoins array length
+    for (let index = 0; index < pickedCoins.length; index++) {
+        let option = {
+            type: "line",
+            xValueType: "dateTime",
+            yValueFormatString: "###.00$",
+            xValueFormatString: "hh:mm:ss TT",
+            showInLegend: true,
+            name: pickedCoins[index].toUpperCase(),
+            dataPoints: eval(`dataPoints${index + 1}`)
+        }
+        options.data.push(option);
+    }
+
+    var chart = $("#chartContainer").CanvasJSChart(options);
+
+    function toggleDataSeries(e) {
+        if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+            e.dataSeries.visible = false;
+        }
+        else {
+            e.dataSeries.visible = true;
+        }
+        e.chart.render();
+    }
+    // requesting for the initial value
+    const yValueArray = [];
+    const url = `https://min-api.cryptocompare.com/data/pricemulti?fsyms=${pickedCoins}&tsyms=USD`;
+    $.getJSON({
+        url: url,
+        success: (response) => {
+            for (let index = 0; index < pickedCoins.length; index++) {
+                let coin = eval(`response.${pickedCoins[index].toUpperCase()}`)
+                if (coin) {
+                    yValueArray.push(coin.USD);
+                } else {
+                    yValueArray.push(0)
+                }
+            }
+        }
+    })
+
+    var updateInterval = 2 * 1000;
+    // initial value
+    for (let index = 0; index < pickedCoins.length; index++) {
+        eval(`var yValue${index + 1} = yValueArray[${index}];`);
+    }
+
+    // starting at current time
+    var time = new Date();
+
+    function updateChart(count) {
+        count = count || 1;
+        for (var i = 0; i < count; i++) {
+            time.setTime(time.getTime() + updateInterval);
+            $.getJSON({
+                url: url,
+                success: (response) => {
+                    for (let index = 0; index < pickedCoins.length; index++) {
+                        let coin = eval(`response.${pickedCoins[index].toUpperCase()}`)
+                        if (coin) {
+                            eval(`yValue${index + 1} = coin.USD;`)
+                        } else {
+                            eval(`yValue${index + 1} = 0`)
+                        }
+                    }
+                }
+            })
+
+            // pushing the new values
+            for (let index = 0; index < pickedCoins.length; index++) {
+                eval(`dataPoints${index + 1}.push({
+                        x: time.getTime(),
+                        y: yValue${index + 1}
+                    });`);
+            }
+        }
+
+        // updating legend text with updated y Value
+        for (let index = 0; index < pickedCoins.length; index++) {
+            eval(`options.data[${index}].legendText = "${pickedCoins[index].toUpperCase()} : ${eval('yValue' + (index + 1))}$";`)
+        }
+        $("#chartContainer").CanvasJSChart().render();
+    }
+    // generates first set of dataPoints 
+    updateChart();
+    setInterval(function () {
+        updateChart()
+    }, updateInterval);
 }
 
+// implementing About Page logic
 function aboutPage() {
-    $('#body').html(`
-        <p>About me page</p>
-    `);
+    $('#body').html(`<p>About me page</p>`);
 }
 
-// implemnting change page function that expects the specific button id, and a callback
+// implementing change page function that expects the specific button id, and a callback
 function changePage(pageButtonId, pageFunction) {
     $(`#${pageButtonId}`).on('click', () => {
         pageFunction();
@@ -94,14 +209,9 @@ function changePage(pageButtonId, pageFunction) {
     })
 }
 
-// calling change page function to each button in the nav bar
-changePage('homeButton', homePage);
-changePage('liveButton', liveReportsPage);
-changePage('aboutButton', aboutPage);
-
+// implementing logic for picking coins to show in the Live Reports page
 const pickedCoins = JSON.parse(localStorage.getItem('pickedCoins')) || new Array();
 
-// implemeting logic for picking coins to show in the Live Reoprts page
 function pickingCoins() {
     const allCards = $('.form-check-input');
 
@@ -128,7 +238,7 @@ function pickingCoins() {
     }
 
     function toggleModal(coinName, coinCard) {
-        // removing coin if nothing was selecet
+        // removing coin if nothing was select
         let pickedCoin = cryptoCoins.find(coin => coin.symbol === coinName);
         pickedCoin.picked = false;
         pickedCoins.splice(pickedCoins.indexOf(coinName), 1);
@@ -147,11 +257,11 @@ function pickingCoins() {
         for (let coin of cryptoCoins) {
             if (coin.picked) {
                 modalBody += `
-                    <div class="card border-light text-bg-dark col-md-4 col-xl-4 col-lg-4 col-sm-12" data-symbol="${coin.symbol}">
+                    <div class="card border-light text-bg-dark col-md-4 col-xl-4 col-lg-4 col-sm-12">
                         <div class="mx-3 mt-3 d-flex justify-content-between">
                             <h5 class="card-title">${coin.symbol.toUpperCase()}</h5>
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" ${coin.picked ? 'checked' : ''}>
+                                <input id="${coin.id}" class="form-check-input" type="checkbox" role="switch" ${coin.picked ? 'checked' : ''}>
                             </div>
                         </div>
                         <div class="card-body pt-0">
@@ -170,14 +280,15 @@ function pickingCoins() {
 
         // implementing logic for switching coins
         $('.form-check-input').on('click', (modalCard) => {
-            let removedCoin = modalCard.target.parentElement.parentElement.children[0].innerText.toLowerCase();
-            changePickedCoins(removedCoin, false);
-            changePickedCoins(coinName, true);
-            coinCard.checked = true;
-            pickedCoinsModal.hide(modalToggle);
-            setTimeout(()=>{
-                homePage()
-            },500);
+            if (modalCard.target.checked === false) {
+                let removedCoin = modalCard.target.parentElement.parentElement.innerText.toLowerCase();
+                let removedCoinId = modalCard.currentTarget.id;
+                changePickedCoins(removedCoin, false);
+                changePickedCoins(coinName, true);
+                coinCard.checked = true;
+                $(`#${removedCoinId}`)[0].checked = false;
+                pickedCoinsModal.hide(modalToggle);
+            }
         })
     }
 }
@@ -193,7 +304,7 @@ function clearPickedCoins() {
     homePage();
 }
 
-// impelemnting search button logic 
+// implementing search button logic 
 $('#searchBtn').on('click', (event) => {
     event.preventDefault();
     let searchValue = $('#searchValue').val().toLowerCase();
@@ -205,29 +316,37 @@ $('#searchBtn').on('click', (event) => {
         }).attr('placeholder', 'Cannot be empty');
         return;
     }
-    if (cryptoCoins.find(coin => coin.symbol === searchValue)) {
-        $('#homeButton').removeClass('active');
-        $('#body').html(`
-            <div class="card border-light text-bg-dark col-md-4 col-xl-4 col-lg-4 col-sm-12">
-                <div class="mx-3 mt-3 d-flex justify-content-between">
-                    <h5 class="card-title">${cryptoCoins.find(coin => coin.symbol === searchValue).symbol.toUpperCase()}</h5>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" ${cryptoCoins.find(coin => coin.symbol === searchValue).picked ? 'checked' : ''}>
+    const results = [];
+    cryptoCoins.find(coin => {
+        if (coin.symbol === searchValue) results.push(coin);
+    })
+
+    if (results.length > 0) {
+        $('.nav-link').removeClass('active');
+        let searchResult = '';
+        for (let result of results) {
+            searchResult += `
+                <div class="card border-light text-bg-dark col-md-4 col-xl-4 col-lg-4 col-sm-12">
+                    <div class="mx-3 mt-3 d-flex justify-content-between">
+                        <h5 class="card-title">${result.symbol.toUpperCase()}</h5>
+                        <div class="form-check form-switch">
+                            <input id="${result.id}" class="form-check-input" type="checkbox" role="switch" ${result.picked ? 'checked' : ''}>
+                        </div>
                     </div>
-                </div>
-                <div class="card-body pt-0">
-                    <p class="card-text">${cryptoCoins.find(coin => coin.symbol === searchValue).name}</p>
-                    <button class="btn btn-light">More Details</button>
-                </div>
-            </div>
-            <p class="mt-3">press 'Home' button to show all the coins again</p>
-    `);
-        pickingCoins();
+                    <div class="card-body pt-0">
+                        <p class="card-text">${result.name}</p>
+                        <button class="btn btn-light">More Details</button>
+                    </div>
+                </div>`
+            $('#body').html(`${searchResult}
+            <p class="mt-3">press 'Home' button to show all the coins again</p>`);
+            pickingCoins();
+        }
     } else {
-        $('#homeButton').removeClass('active');
+        $('.nav-link').removeClass('active');
         $('#body').html(`
             <p>Not Found</p>
-            <p>press 'Home' button to show all the coins again</p>
+            <p>press 'Home' button to show all the coins again or search for another coin</p>
         `)
     }
 })
@@ -239,7 +358,7 @@ $('#searchValue').on('keyup', () => {
     }).attr('placeholder', 'Search');
 })
 
-// implementing open more detail modal
+// implementing open "More Detail" modal
 $('.moreInfoBtn').on('click', function () {
     const moreInfoModal = new bootstrap.Modal('#moreInfoModal');
     const modalToggle = document.getElementById('moreInfoModal');
@@ -275,15 +394,15 @@ function modalBody(symbol) {
                     // saving to the localStorage
                     localStorage.setItem('savedCoinsDetails', JSON.stringify(savedCoinsDetails));
                     $("#modalOverlay").fadeOut(300);
-                    // injecting to the 'More Deatils' modal
+                    // injecting to the "More Details" modal
                     injectModalBody(symbol);
                 }, 300);
             },
             success: (result) => {
-                // saving coins 'More Deatils' data inside an array
+                // saving coins "More Details" data inside an array
                 savedCoinsDetails.push({
                     symbol: coin.symbol,
-                    imgSrc: result.image.small, // thumb , small , large
+                    imgSrc: result.image.small, // image options: thumb , small , large
                     usd: result['market_data']['current_price'].usd,
                     eur: result['market_data']['current_price'].eur,
                     ils: result['market_data']['current_price'].ils,
@@ -312,3 +431,8 @@ setInterval(() => {
     localStorage.removeItem('savedCoinsDetails');
     savedCoinsDetails.splice(0);
 }, 2 * 60 * 1000);
+
+// calling change page function to each button in the nav bar
+changePage('homeButton', homePage);
+changePage('liveButton', liveReportsPage);
+changePage('aboutButton', aboutPage);
