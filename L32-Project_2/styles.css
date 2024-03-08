@@ -1,28 +1,32 @@
 body {
     text-align: center;
     background-color: rgb(40, 40, 40);
-    color: whitesmoke
+    color: whitesmoke;
+    font-family: "Anta", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 /* Start | spinner loading animation */
-#overlay{	
+#overlay,
+#liveOverlay {
     position: fixed;
     top: 0;
     z-index: 100;
     width: 100%;
-    height:100%;
+    height: 100%;
     display: none;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0, 0, 0, 0.6);
 }
 
-  .cv-spinner {
+.cv-spinner {
     height: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;  
+    align-items: center;
 }
 
-  .spinner {
+.spinner {
     width: 40px;
     height: 40px;
     border: 4px #ddd solid;
@@ -31,15 +35,16 @@ body {
     animation: sp-anime 0.8s infinite linear;
 }
 
-  @keyframes sp-anime {
-    100% { 
-      transform: rotate(360deg); 
+@keyframes sp-anime {
+    100% {
+        transform: rotate(360deg);
     }
 }
 
-  .is-hide{
-    display:none;
+.is-hide {
+    display: none;
 }
+
 /* End | spinner loading animation */
 
 #headline {
@@ -47,8 +52,8 @@ body {
     width: 100%;
     /* background-color: black; */
     border-bottom: solid whitesmoke 3px;
-    background: rgb(60,60,60);
-    background: linear-gradient(140deg, rgba(60,60,60,1) 0%, rgba(0,0,0,1) 100%);
+    background: rgb(60, 60, 60);
+    background: linear-gradient(140deg, rgba(60, 60, 60, 1) 0%, rgba(0, 0, 0, 1) 100%);
 }
 
 h1 {
@@ -97,31 +102,31 @@ h1 {
 
 .active {
     background-color: rgb(33, 33, 33) !important;
-    color: rgb(220,220,220) !important;
+    color: rgb(220, 220, 220) !important;
     border-radius: 9px;
 }
 
 .active:hover {
     background-color: rgb(40, 40, 40) !important;
-    color: rgb(255,255,255) !important;
+    color: rgb(255, 255, 255) !important;
 }
 
 .nav-item,
-input[role="switch"]{
+input[role="switch"] {
     cursor: pointer;
 }
 
-.modal-content{
+.modal-content {
     text-align: center;
-    background-color: rgb(60,60,60);
+    background-color: rgb(60, 60, 60);
     color: whitesmoke;
 }
 
-.modal-title{
+.modal-title {
     margin-left: auto;
 }
 
-.coinTitle{
+.coinTitle {
     margin-left: 44.5%;
 }
 
@@ -129,8 +134,45 @@ input[role="switch"]{
     display: none;
 }
 
-body.loading .progress{
+body.loading .progress {
     display: block;
+}
+
+.aboutMeHeader {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.aboutMeBody {
+    margin-bottom: 2rem;
+}
+
+.firstParagraph {
+    font-size: xx-large;
+}
+
+#allMyInfo {
+    margin-bottom: 2rem;
+}
+
+#myInfo {
+    /* margin-top: 3rem; */
+    margin: auto 0;
+    border-left: 1px white solid;
+    height: 6rem;
+}
+
+#myImg {
+    margin: auto 0 !important;
+    padding: 0 !important;
+    border: 0px;
+    border-radius: 50%;
+    max-height: 200px;
+    max-width: 200px;
+}
+
+.link-info:hover {
+    cursor: pointer;
 }
 
 /* Laptops */
@@ -138,6 +180,12 @@ body.loading .progress{
     .logo {
         left: 87.5%;
         margin-top: -4.3em;
+    }
+}
+
+@media (max-width: 992px) {
+    #myInfo {
+        height: 8rem;
     }
 }
 
@@ -155,17 +203,28 @@ body.loading .progress{
     }
 }
 
-/* Mobile Phone */
 @media (max-width: 767.98px) {
     .logo {
         display: none;
     }
 }
 
-
-@media (max-width: 575.98px){
-    #navbar{
+/* Mobile Phone */
+@media (max-width: 575.98px) {
+    #navbar {
         max-width: 20rem;
         margin: 0 auto;
+    }
+}
+
+@media (max-width: 492px) {
+    #allMyInfo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #myInfo {
+        height: 9rem;
     }
 }

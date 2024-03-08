@@ -8,6 +8,8 @@ const now = new Date();
 let lastUpdated = new Date(JSON.parse(localStorage.getItem('lastUpdated')));
 // last updated + 24 hours (in milliseconds):
 const oneDay = new Date(lastUpdated).getTime() + (24 * 60 * 60 * 1000);
+// declaring a variable to store the setInterval id
+let liveGraphInterval;
 
 /* getting the data and saving to localStorage if 24 hours has passed since the last update
 or localStorage don't have coins data. */
@@ -15,11 +17,16 @@ if (now.getTime() >= oneDay || !localStorage.getItem('cryptoCoins')) {
     $.get({
         url: url,
         beforeSend: () => {
+            // before receiving the API call data, clearing the current data form the array and form localStorage:
+            cryptoCoins.splice(0)
+            localStorage.removeItem('cryptoCoins');
+            // showing the loading animation
             $(document).ajaxSend(() => {
                 $("#overlay").fadeIn(300);
             });
         },
         complete: () => {
+            // hiding the loading animation
             setTimeout(() => {
                 $("#overlay").fadeOut(300);
             }, 500);
@@ -27,7 +34,6 @@ if (now.getTime() >= oneDay || !localStorage.getItem('cryptoCoins')) {
         },
         success: (result) => {
             for (let coin of result) {
-                localStorage.removeItem('cryptoCoins');
                 // adding a coin only if the first letter is not a number in id, symbol and name fileds and the symbol is 3 letters.
                 if (Number.isNaN(parseInt(coin.symbol[0])) && Number.isNaN(parseInt(coin.id[0])) && Number.isNaN(parseInt(coin.name[0])) && coin.symbol.length === 3) {
                     cryptoCoins.push(coin);
@@ -41,17 +47,18 @@ if (now.getTime() >= oneDay || !localStorage.getItem('cryptoCoins')) {
         }
     })
 } else homePage();
+// } else aboutPage();
 
 function homePage() {
     // injecting the clear all choices button
     $('#clearAllButton').html(`
-        <button id="clearPickedCoins" class="btn btn-light col-auto mt-4" onclick="clearPickedCoins()">Clear All Picked Coins</button>
+        <button id="clearPickedCoins" class="btn btn-light col-auto mt-4" onclick=clearPickedCoins()>Clear All Picked Coins</button>
     `)
     // generating cards from the coins array.
     let cardsBody = '';
-    for (let index = 0; index <= 100; index++) {
+    for (let index = 0; index < cryptoCoins.length; index++) {
         cardsBody += `
-        <div class="card border-light text-bg-dark col-md-4 col-xl-4 col-lg-4 col-sm-12">
+        <div class="card border-light text-bg-dark col-md-4 col-xl-4 col-lg-4 col-sm-12" data-symbol="${cryptoCoins[index].symbol}">
             <div class="mx-3 mt-3 d-flex justify-content-between">
                 <h5 class="card-title">${cryptoCoins[index].symbol.toUpperCase()}</h5>
                 <div class="form-check form-switch">
@@ -60,7 +67,7 @@ function homePage() {
             </div>
             <div class="card-body pt-0">
                 <p class="card-text">${cryptoCoins[index].name}</p>
-                <button class="btn btn-light moreInfoBtn">More Details</button>
+                <button id="button-${cryptoCoins[index].id}" class="btn btn-light moreInfoBtn" onclick=showMoreDetails('${cryptoCoins[index].id}')>More Details</button>
             </div>
         </div>
     `
@@ -68,12 +75,20 @@ function homePage() {
     // injecting coins cards to a div with body ID
     $('#body').html(cardsBody);
     pickingCoins();
+    liveGraphInterval && clearInterval(liveGraphInterval);
 }
 
 // implementing Live Reports Page logic
 function liveReportsPage() {
     $('#clearAllButton').html(``);
-    $('#body').html(`<div id="chartContainer" class="mb-4" style="height: 370px; width: 100%;"></div>`);
+    $('#body').html(`
+    <div id="liveOverlay">
+        <div class="cv-spinner">
+            <span class="spinner"></span>
+        </div>
+    </div>
+    <div id="chartContainer" style="height: 370px; width: 100%; margin-top: 1rem; margin-bottom: 6rem;"></div>
+    `);
     // declaring price points arrays dynamically depending on the pickedCoins array length 
     for (let index = 0; index < pickedCoins.length; index++) {
         eval(`var dataPoints${index + 1} = [];`)
@@ -106,7 +121,7 @@ function liveReportsPage() {
         let option = {
             type: "line",
             xValueType: "dateTime",
-            yValueFormatString: "###.00$",
+            yValueFormatString: "###.000000$",
             xValueFormatString: "hh:mm:ss TT",
             showInLegend: true,
             name: pickedCoins[index].toUpperCase(),
@@ -126,11 +141,21 @@ function liveReportsPage() {
         }
         e.chart.render();
     }
+    var updateInterval = 2 * 1000;
+
     // requesting for the initial value
     const yValueArray = [];
     const url = `https://min-api.cryptocompare.com/data/pricemulti?fsyms=${pickedCoins}&tsyms=USD`;
     $.getJSON({
         url: url,
+        beforeSend: () => {
+            $("#liveOverlay").fadeIn(300);
+        },
+        complete: () => {
+            setTimeout(() => {
+                $("#liveOverlay").fadeOut(300);
+            }, updateInterval);
+        },
         success: (response) => {
             for (let index = 0; index < pickedCoins.length; index++) {
                 let coin = eval(`response.${pickedCoins[index].toUpperCase()}`)
@@ -143,7 +168,6 @@ function liveReportsPage() {
         }
     })
 
-    var updateInterval = 2 * 1000;
     // initial value
     for (let index = 0; index < pickedCoins.length; index++) {
         eval(`var yValue${index + 1} = yValueArray[${index}];`);
@@ -181,20 +205,53 @@ function liveReportsPage() {
 
         // updating legend text with updated y Value
         for (let index = 0; index < pickedCoins.length; index++) {
-            eval(`options.data[${index}].legendText = "${pickedCoins[index].toUpperCase()} : ${eval('yValue' + (index + 1))}$";`)
+            let price = eval('yValue' + (index + 1));
+            eval(`options.data[${index}].legendText = "${pickedCoins[index].toUpperCase()} : ${price ? price : 'N/A'}$";`)
         }
         $("#chartContainer").CanvasJSChart().render();
     }
     // generates first set of dataPoints 
     updateChart();
-    setInterval(function () {
+    liveGraphInterval = setInterval(function () {
         updateChart()
     }, updateInterval);
 }
 
+
 // implementing About Page logic
 function aboutPage() {
-    $('#body').html(`<p>About me page</p>`);
+    $('#clearAllButton').html(``);
+    $('#body').html(`
+        <h1 class="aboutMeHeader border-bottom">About Me</h1>
+        <div class="row aboutMeBody">
+            <div class="firstParagraph col-12 col-md-6">
+                <i>"Those who work hard, work alone. <br/>
+                Those who work smart, work as a team."</i> 
+            </div>
+            <div class="text-start col-12 col-md-6 mb-md-4 mb-0">
+            <p>Hi! this project is about generating information about Crypto Currency through several API's. 
+            In this project i used the knowledge we've learned through Fullstack Web Developer course at John Bryce Haifa.
+            For styling i used Bootstrap library and native CSS, for the client side i used the JQurey library and vanila JavaScript.
+            To save all the data gathered i used the browser built-in API Local Storage.</p>
+
+            A little about me (as if someone cares...) my name is Gabriel Samoylov i am 30 years old an aspiring FullStack Web Developer.
+            I am a creative problem solver and I enjoy working with complex coding challenges.
+            I have a passion for developing high-quality software. I learn quickly and adapt to new technologies.
+            I also have excellent communication and organizational skills, which help me to collaborate effectively with other team members.
+            </div>
+        </div>
+        <div id="allMyInfo" class="row">
+            <div class="col-1 col-md-2 col-lg-3"></div>
+            <div id="imgDiv" class="text-end col-6 col-lg-3 col-md-4"><img id="myImg" class="img-thumbnail" src="images/GabrielSamo.jpg" alt="image of myself (Gabriel Samoylov)"/></div>
+            <div id="myInfo" class="col-4 col-md-3 text-start"> 
+                <div >Gabriel Samoylov</div>
+                <div>Fullstack Web Developer</div>
+                <div>(Aspiring one...)</div>
+                <a class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="https://github.com/gabriel-samo/" target="_blank">Github Link</a>
+            </div> 
+        </div>
+    `);
+    liveGraphInterval && clearInterval(liveGraphInterval);
 }
 
 // implementing change page function that expects the specific button id, and a callback
@@ -217,29 +274,30 @@ function pickingCoins() {
 
     allCards.on('change', (card) => {
         const coinCard = card.target;
-        const coinName = card.target.parentElement.parentElement.children[0].innerText.toLowerCase();
+        const coinId = card.currentTarget.id;
+        const coinName = card.target.parentElement.parentElement.innerText.toLowerCase();
 
         if (!pickedCoins.includes(coinName)) {
-            changePickedCoins(coinName, true);
-            if (pickedCoins.length > 5) toggleModal(coinName, coinCard);
+            changePickedCoins(coinName, true, coinId);
+            if (pickedCoins.length > 5) toggleModal(coinName, coinCard, coinId);
         } else {
-            changePickedCoins(coinName, false);
+            changePickedCoins(coinName, false, coinId);
         }
     })
 
-    function changePickedCoins(coinName, add) {
+    function changePickedCoins(coinName, add, coinId = '') {
         let deleteIndex = add ? '' : pickedCoins.indexOf(coinName);
         add ? pickedCoins.push(coinName) : pickedCoins.splice(deleteIndex, 1);
-        let pickedCoin = cryptoCoins.find(coin => coin.symbol === coinName);
+        let pickedCoin = cryptoCoins.find(coin => coin.id === coinId);
         add ? pickedCoin.picked = true : pickedCoin.picked = false;
         // saving to localStorage
         localStorage.setItem('cryptoCoins', JSON.stringify(cryptoCoins));
         localStorage.setItem('pickedCoins', JSON.stringify(pickedCoins));
     }
 
-    function toggleModal(coinName, coinCard) {
+    function toggleModal(coinName, coinCard, coinId) {
         // removing coin if nothing was select
-        let pickedCoin = cryptoCoins.find(coin => coin.symbol === coinName);
+        let pickedCoin = cryptoCoins.find(coin => coin.id === coinId);
         pickedCoin.picked = false;
         pickedCoins.splice(pickedCoins.indexOf(coinName), 1);
         coinCard.checked = false;
@@ -283,8 +341,8 @@ function pickingCoins() {
             if (modalCard.target.checked === false) {
                 let removedCoin = modalCard.target.parentElement.parentElement.innerText.toLowerCase();
                 let removedCoinId = modalCard.currentTarget.id;
-                changePickedCoins(removedCoin, false);
-                changePickedCoins(coinName, true);
+                changePickedCoins(removedCoin, false, removedCoinId);
+                changePickedCoins(coinName, true, coinId);
                 coinCard.checked = true;
                 $(`#${removedCoinId}`)[0].checked = false;
                 pickedCoinsModal.hide(modalToggle);
@@ -326,18 +384,18 @@ $('#searchBtn').on('click', (event) => {
         let searchResult = '';
         for (let result of results) {
             searchResult += `
-                <div class="card border-light text-bg-dark col-md-4 col-xl-4 col-lg-4 col-sm-12">
-                    <div class="mx-3 mt-3 d-flex justify-content-between">
-                        <h5 class="card-title">${result.symbol.toUpperCase()}</h5>
-                        <div class="form-check form-switch">
-                            <input id="${result.id}" class="form-check-input" type="checkbox" role="switch" ${result.picked ? 'checked' : ''}>
-                        </div>
-                    </div>
-                    <div class="card-body pt-0">
-                        <p class="card-text">${result.name}</p>
-                        <button class="btn btn-light">More Details</button>
-                    </div>
-                </div>`
+            <div class="card border-light text-bg-dark col-md-4 col-xl-4 col-lg-4 col-sm-12" data-symbol="${result.symbol}">
+            <div class="mx-3 mt-3 d-flex justify-content-between">
+                <h5 class="card-title">${result.symbol.toUpperCase()}</h5>
+                <div class="form-check form-switch">
+                    <input id="${result.id}" class="form-check-input" type="checkbox" role="switch" ${result.picked ? 'checked' : ''}>
+                </div>
+            </div>
+            <div class="card-body pt-0">
+                <p class="card-text">${result.name}</p>
+                <button id="button-${result.id}" class="btn btn-light moreInfoBtn" onclick=showMoreDetails('${result.id}')>More Details</button>
+            </div>
+        </div>`
             $('#body').html(`${searchResult}
             <p class="mt-3">press 'Home' button to show all the coins again</p>`);
             pickingCoins();
@@ -359,21 +417,21 @@ $('#searchValue').on('keyup', () => {
 })
 
 // implementing open "More Detail" modal
-$('.moreInfoBtn').on('click', function () {
+function showMoreDetails(coinId) {
     const moreInfoModal = new bootstrap.Modal('#moreInfoModal');
     const modalToggle = document.getElementById('moreInfoModal');
-    const symbol = $(this.parentElement.parentElement).data('symbol');
+    const symbol = $(`#button-${coinId}`).parent().parent().data('symbol');
     $('#moreInfoModalLabel').text(symbol.toUpperCase());
-    modalBody(symbol);
+    modalBody(coinId);
     moreInfoModal.show(modalToggle);
-})
+}
 
 const savedCoinsDetails = JSON.parse(localStorage.getItem('savedCoinsDetails')) || new Array();
 
-function modalBody(symbol) {
-    const coin = cryptoCoins.find(coin => coin.symbol === symbol);
-    const url = `https://api.coingecko.com/api/v3/coins/${coin.id}`;
-    let thisCoin = savedCoinsDetails.find(coinObj => coinObj.symbol === symbol);
+function modalBody(coinId) {
+    const coin = cryptoCoins.find(coin => coin.id === coinId);
+    const url = `https://api.coingecko.com/api/v3/coins/${coinId}`;
+    let thisCoin = savedCoinsDetails.find(coinObj => coinObj.id === coinId);
     if (!thisCoin) {
         $.get({
             url: url,
@@ -395,12 +453,13 @@ function modalBody(symbol) {
                     localStorage.setItem('savedCoinsDetails', JSON.stringify(savedCoinsDetails));
                     $("#modalOverlay").fadeOut(300);
                     // injecting to the "More Details" modal
-                    injectModalBody(symbol);
+                    injectModalBody(coinId);
                 }, 300);
             },
             success: (result) => {
                 // saving coins "More Details" data inside an array
                 savedCoinsDetails.push({
+                    id: coin.id,
                     symbol: coin.symbol,
                     imgSrc: result.image.small, // image options: thumb , small , large
                     usd: result['market_data']['current_price'].usd,
@@ -410,18 +469,18 @@ function modalBody(symbol) {
             }
         })
     } else {
-        injectModalBody(symbol);
+        injectModalBody(coinId);
     }
 }
 
-function injectModalBody(symbol) {
-    let thisCoin = savedCoinsDetails.find(coinObj => coinObj.symbol === symbol);
+function injectModalBody(coinId) {
+    let thisCoin = savedCoinsDetails.find(coinObj => coinObj.id === coinId);
     $('.modal-body').html(`
         <p id="coinImage"><img src="${thisCoin.imgSrc}" alt="${thisCoin.symbol.toUpperCase()} coin image" /></p>
         <p id="coinPrices">
-            <p>USD: ${thisCoin.usd ? thisCoin.usd : 'N/A'}$</p>
-            <p>EUR: ${thisCoin.eur ? thisCoin.eur : 'N/A'}€</p>
-            <p>ILS: ${thisCoin.ils ? thisCoin.ils : 'N/A'}₪</p>
+            <p>USD: ${thisCoin.usd ? thisCoin.usd.toLocaleString() : 'N/A'}$</p>
+            <p>EUR: ${thisCoin.eur ? thisCoin.eur.toLocaleString() : 'N/A'}€</p>
+            <p>ILS: ${thisCoin.ils ? thisCoin.ils.toLocaleString() : 'N/A'}₪</p>
         </p>
     `)
 }

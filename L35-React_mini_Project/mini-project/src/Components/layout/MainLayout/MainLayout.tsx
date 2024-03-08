@@ -1,23 +1,23 @@
+import MainBody from "../MainBody/MainBody";
 import MainFooter from "../MainFooter/MainFooter";
 import MainHeader from "../MainHeader/MainHeader";
 import MainMenu from "../MainMenu/MainMenu";
-import MainPage from "../MainPage/MainPage";
 import "./MainLayout.css";
 
 function MainLayout(): JSX.Element {
     return (
         <div className="MainLayout">
-			<header>
-                <MainHeader/>
+            <header>
+                <MainHeader />
             </header>
             <aside>
-                <MainMenu/>
+                <MainMenu />
             </aside>
             <main>
-                <MainPage/>
+                <MainBody />
             </main>
             <footer>
-                <MainFooter/>
+                <MainFooter />
             </footer>
         </div>
     );
