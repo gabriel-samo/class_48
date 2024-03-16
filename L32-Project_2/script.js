@@ -130,6 +130,7 @@ function liveReportsPage() {
         options.data.push(option);
     }
 
+    // generating the graph with the "options" object
     var chart = $("#chartContainer").CanvasJSChart(options);
 
     function toggleDataSeries(e) {
@@ -141,6 +142,8 @@ function liveReportsPage() {
         }
         e.chart.render();
     }
+
+    // declaring an interval in milliseconds
     var updateInterval = 2 * 1000;
 
     // requesting for the initial value
@@ -176,37 +179,30 @@ function liveReportsPage() {
     // starting at current time
     var time = new Date();
 
-    function updateChart(count) {
-        count = count || 1;
-        for (var i = 0; i < count; i++) {
-            time.setTime(time.getTime() + updateInterval);
-            $.getJSON({
-                url: url,
-                success: (response) => {
-                    for (let index = 0; index < pickedCoins.length; index++) {
-                        let coin = eval(`response.${pickedCoins[index].toUpperCase()}`)
-                        if (coin) {
-                            eval(`yValue${index + 1} = coin.USD;`)
-                        } else {
-                            eval(`yValue${index + 1} = 0`)
-                        }
-                    }
+    // defining a function for updating the chart 
+    function updateChart() {
+        time.setTime(time.getTime() + updateInterval);
+        $.getJSON({
+            url: url,
+            success: (response) => {
+                for (let index = 0; index < pickedCoins.length; index++) {
+                    let coin = eval(`response.${pickedCoins[index].toUpperCase()}`)
+                    coin ? eval(`yValue${index + 1} = coin.USD;`) : eval(`yValue${index + 1} = 0`)
                 }
-            })
-
-            // pushing the new values
-            for (let index = 0; index < pickedCoins.length; index++) {
-                eval(`dataPoints${index + 1}.push({
-                        x: time.getTime(),
-                        y: yValue${index + 1}
-                    });`);
             }
+        })
+        // pushing the new values
+        for (let index = 0; index < pickedCoins.length; index++) {
+            eval(`dataPoints${index + 1}.push({
+                    x: time.getTime(),
+                    y: yValue${index + 1}
+                    });`);
         }
 
         // updating legend text with updated y Value
         for (let index = 0; index < pickedCoins.length; index++) {
             let price = eval('yValue' + (index + 1));
-            eval(`options.data[${index}].legendText = "${pickedCoins[index].toUpperCase()} : ${price ? price : 'N/A'}$";`)
+            eval(`options.data[${index}].legendText = "${pickedCoins[index].toUpperCase()} : ${price ? price + '$' : 'N/A'}";`)
         }
         $("#chartContainer").CanvasJSChart().render();
     }
@@ -275,7 +271,7 @@ function pickingCoins() {
     allCards.on('change', (card) => {
         const coinCard = card.target;
         const coinId = card.currentTarget.id;
-        const coinName = card.target.parentElement.parentElement.innerText.toLowerCase();
+        const coinName = coinCard.parentElement.parentElement.innerText.toLowerCase();
 
         if (!pickedCoins.includes(coinName)) {
             changePickedCoins(coinName, true, coinId);
@@ -304,7 +300,7 @@ function pickingCoins() {
         // saving to localStorage
         localStorage.setItem('cryptoCoins', JSON.stringify(cryptoCoins));
         localStorage.setItem('pickedCoins', JSON.stringify(pickedCoins));
-        // Modal logic
+        // Modal logic:
         const pickedCoinsModal = new bootstrap.Modal('#pickedCoinsModal');
         const modalToggle = document.getElementById('pickedCoinsModal');
         pickedCoinsModal.show(modalToggle);
@@ -376,11 +372,11 @@ $('#searchBtn').on('click', (event) => {
     }
     const results = [];
     cryptoCoins.find(coin => {
-        if (coin.symbol === searchValue) results.push(coin);
+        coin.symbol === searchValue && results.push(coin);
     })
 
+    $('.nav-link').removeClass('active');
     if (results.length > 0) {
-        $('.nav-link').removeClass('active');
         let searchResult = '';
         for (let result of results) {
             searchResult += `
@@ -401,7 +397,6 @@ $('#searchBtn').on('click', (event) => {
             pickingCoins();
         }
     } else {
-        $('.nav-link').removeClass('active');
         $('#body').html(`
             <p>Not Found</p>
             <p>press 'Home' button to show all the coins again or search for another coin</p>
@@ -449,15 +444,13 @@ function modalBody(coinId) {
             },
             complete: () => {
                 setTimeout(() => {
-                    // saving to the localStorage
-                    localStorage.setItem('savedCoinsDetails', JSON.stringify(savedCoinsDetails));
                     $("#modalOverlay").fadeOut(300);
-                    // injecting to the "More Details" modal
+                    // injecting to the "More Details" modal body
                     injectModalBody(coinId);
                 }, 300);
             },
             success: (result) => {
-                // saving coins "More Details" data inside an array
+                // saving coin's "More Details" data inside an array
                 savedCoinsDetails.push({
                     id: coin.id,
                     symbol: coin.symbol,
@@ -466,6 +459,8 @@ function modalBody(coinId) {
                     eur: result['market_data']['current_price'].eur,
                     ils: result['market_data']['current_price'].ils,
                 })
+                // saving to the localStorage
+                localStorage.setItem('savedCoinsDetails', JSON.stringify(savedCoinsDetails));
             }
         })
     } else {
@@ -478,20 +473,20 @@ function injectModalBody(coinId) {
     $('.modal-body').html(`
         <p id="coinImage"><img src="${thisCoin.imgSrc}" alt="${thisCoin.symbol.toUpperCase()} coin image" /></p>
         <p id="coinPrices">
-            <p>USD: ${thisCoin.usd ? thisCoin.usd.toLocaleString() : 'N/A'}$</p>
-            <p>EUR: ${thisCoin.eur ? thisCoin.eur.toLocaleString() : 'N/A'}€</p>
-            <p>ILS: ${thisCoin.ils ? thisCoin.ils.toLocaleString() : 'N/A'}₪</p>
+            <p>USD: ${thisCoin.usd ? thisCoin.usd + '$' : 'N/A'}</p>
+            <p>EUR: ${thisCoin.eur ? thisCoin.eur + '€' : 'N/A'}</p>
+            <p>ILS: ${thisCoin.ils ? thisCoin.ils + '₪' : 'N/A'}</p>
         </p>
     `)
 }
 
-// clearing saved coins details from the localStorage every 2 minutes
+// clearing saved coins details from the localStorage and array that stores the data every 2 minutes
 setInterval(() => {
     localStorage.removeItem('savedCoinsDetails');
     savedCoinsDetails.splice(0);
 }, 2 * 60 * 1000);
 
-// calling change page function to each button in the nav bar
+// calling change page function to each button in the navigation bar
 changePage('homeButton', homePage);
 changePage('liveButton', liveReportsPage);
 changePage('aboutButton', aboutPage);

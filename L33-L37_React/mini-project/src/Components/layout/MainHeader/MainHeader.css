@@ -1,0 +1,19 @@
+.MainHeader {
+    display: grid;
+    grid-template-columns: repeat(15, 1fr);
+}
+
+.MainHeader>h1 {
+    text-align: center;
+    grid-column: span 14;
+}
+
+.MainHeader>a {
+    margin: auto;
+    text-decoration: none;
+    color: white
+}
+
+.MainHeader>a:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,13 @@
+.SingleExchange {
+    /* margin: 1rem; */
+    display: inline-block;
+}
+
+.SingleExchange>* {
+    color: white
+}
+
+.SingleExchange a {
+    color: white;
+    text-decoration: none;
+}

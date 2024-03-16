@@ -1,0 +1,22 @@
+.MainMenu {}
+
+.MainMenu>.mainList {
+    margin: 0;
+    padding: 0;
+    padding-left: 1rem;
+    list-style-type: "\27A7";
+    text-align: start;
+}
+
+.MainMenu li {
+    list-style-type: "\27A7";
+}
+
+.MainMenu a {
+    color: #f3e5f5;
+    text-decoration: none;
+}
+
+.MainMenu a:hover {
+    text-decoration: underline;
+}
