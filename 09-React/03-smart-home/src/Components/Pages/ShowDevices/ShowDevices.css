@@ -1,0 +1,14 @@
+.ShowDevices {}
+
+.ShowDevices .text-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.ShowDevices span:nth-child(odd) {
+    text-align: end;
+}
+
+.ShowDevices span:nth-child(even) {
+    text-align: center;
+}
