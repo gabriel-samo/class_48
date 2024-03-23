@@ -1,0 +1,12 @@
+.SearchPage {}
+
+.SearchPage .Card {
+    display: inline-block;
+    max-width: 15rem;
+    max-height: 15rem;
+    border-radius: 2rem;
+    background-color: #191919;
+    margin: 1rem;
+    text-align: center;
+    padding: 2rem;
+}
