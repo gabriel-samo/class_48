@@ -1,0 +1,26 @@
+input,
+select{
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+.card{
+    width: 35rem;
+    margin: 0 auto;
+}
+
+#productName,
+#productPrice,
+#productImg{
+    margin: 0 auto;
+    width: 15rem;
+}
+
+#productType{
+    margin: 0 auto;
+    width: 8rem;
+}
+
+img{
+    height: 100px;
+}

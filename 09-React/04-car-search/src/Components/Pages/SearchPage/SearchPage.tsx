@@ -53,11 +53,11 @@ function SearchPage(): JSX.Element {
             .then((result) => {
                 const data = result.data.result.records;
                 for (let index = 0; index < DATA_LIMIT; index++) {
-                    carData.push(new Car(data[index].baalut, data[index].tozeret_nm, data[index].kinuy_mishari, data[index].sug_delek_nm, data[index].mispar_rechev))
+                    if (data.length > 0) {
+                        carData.push(new Car(data[index].baalut, data[index].tozeret_nm, data[index].kinuy_mishari, data[index].sug_delek_nm, data[index].mispar_rechev))
+                    }
                 }
-                console.log(carData)
                 setSearchResult(carData);
-                console.log(searchResult)
             })
     }
 
@@ -68,7 +68,7 @@ function SearchPage(): JSX.Element {
             <input type="button" value="Search" onClick={handleClick} />
             <br /><br /><br />
             <div>
-                {searchResult && searchResult.map((item, index) => <SingleItem key={index} item={item} />)}
+                {searchResult.length > 0 ? searchResult.map((item, index) => <SingleItem key={index} item={item} />) : 'No Results...'}
             </div>
         </div>
     );
