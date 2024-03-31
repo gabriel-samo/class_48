@@ -1,0 +1,15 @@
+.AddNewSong {}
+
+.AddNewSong .custom-button {
+    margin: 0 auto;
+    width: 10rem;
+}
+
+.AddNewSong .Desc {
+    max-width: 25rem;
+    max-height: 10rem;
+    overflow: auto;
+    scrollbar-track-color: black;
+    margin: 0 auto;
+    padding: 1rem;
+}
