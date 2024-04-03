@@ -16,7 +16,13 @@
     font-size: larger;
 }
 
-.MainMenu a:hover {
+.MainMenu a:hover,
+.MainMenu a.active:hover {
     background-color: #f7e596;
+    color: #3a4346
+}
+
+.MainMenu a.active {
+    background-color: #b2a66d;
     color: #3a4346
 }

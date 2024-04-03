@@ -4,12 +4,12 @@ import { configureStore } from "@reduxjs/toolkit";
 import { carsSlice } from "./carsSlice";
 
 export const store = configureStore({
-    reducer: {
-        cars: carsSlice.reducer,
-    },
-    middleware: (getDefaultMiddleWare) =>
-        getDefaultMiddleWare({ serializableCheck: false })
-})
+  reducer: {
+    cars: carsSlice.reducer,
+  },
+  middleware: (getDefaultMiddleWare) =>
+    getDefaultMiddleWare({ serializableCheck: false }),
+});
 
 export type AppDispatch = typeof store.dispatch;
-export type RootState = ReturnType<typeof store.getState>
+export type RootState = ReturnType<typeof store.getState>;

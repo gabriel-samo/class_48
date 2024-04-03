@@ -1,8 +1,13 @@
 .CarDetails {
-	width: 70%;
+    width: 70%;
 }
 
-.CarDetails img{
-    width: 15rem;
-    
+.CarDetails img {
+    display: block;
+    max-width: 40rem;
+    margin: 1rem auto;
+}
+
+.CarDetails span:nth-child(odd) {
+    color: #ffffff;
 }

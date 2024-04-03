@@ -1,8 +1,6 @@
-.AddNewCar {
-	
-}
+.AddNewCar {}
 
-.AddNewCar .CarDetails{
+.AddNewCar .CarDetails {
     display: block;
     min-width: 20rem;
     width: 30rem;
@@ -17,21 +15,17 @@
     text-align: start;
 }
 
-.AddNewCar .detailLabel{
-    background-color: #2e3234;
+.AddNewCar .detailLabel {
     color: white;
     margin-right: 0.5rem;
-    padding: 0.1rem;
-    border-radius: 0.5rem;
 }
 
-.AddNewCar .inputArea{
+.AddNewCar .inputArea {
     display: flex;
     flex-direction: row;
-    gap: 0.5rem;
+    gap: 1rem;
 }
 
-.AddNewCar .inputArea label{
+.AddNewCar .inputArea label {
     align-self: center;
 }
-
