@@ -1,0 +1,15 @@
+.SongList {}
+
+.SongList .headerItem input[type='button'] {
+    width: 10rem;
+}
+
+.SongList .headerItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.SongList h2 {
+    margin: 0 auto;
+}
