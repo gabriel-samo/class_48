@@ -1,0 +1,16 @@
+{
+  "name": "01-nodejsbasics",
+  "version": "0.0.1",
+  "description": "my first nodejs project",
+  "main": "nodeJs.js",
+  "scripts": {
+    "start": "nodemon nodeJs.js",
+    "targil1": "nodemon nodeJsTargil.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gabriel",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
