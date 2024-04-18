@@ -35,8 +35,12 @@ function writeDataToFile(myData) {
   // checking if file 'my-data.json' exists
   if (!fs.existsSync('./data/my-data.json')) {
     // if false, creating and writing to 'my-data.json' the 'myData' object after stringify the object.
-    fs.writeFileSync('./data/my-data.json', JSON.stringify(myData));
+    fs.writeFileSync('./data/my-data.json', JSON.stringify([myData]));
     console.log('File was created!');
+  } else {
+    const prevData = JSON.parse(fs.readFileSync('./data/my-data.json', { encoding: 'utf8' }));
+    fs.writeFileSync('./data/my-data.json', JSON.stringify([...prevData, myData]));
+    console.log('Appended to the file!');
   }
 }
 
@@ -44,7 +48,7 @@ function readDataFromFile() {
   // checking if 'my-data.json' exists.
   if (fs.existsSync('./data/my-data.json')) {
     // if true parsing the extracting the 'name' and the 'address' fields 
-    const { name, address } = JSON.parse(fs.readFileSync('./data/my-data.json', { encoding: 'utf8' }));
+    const { name, address } = JSON.parse(fs.readFileSync('./data/my-data.json', { encoding: 'utf8' }))[0];
     console.log(`\nMy name is ${name}\nI live in ${address}`);
   }
 }
@@ -52,5 +56,6 @@ function readDataFromFile() {
 writeDataToFile(myData);
 readDataFromFile();
 
+//====================================================================================================================================
 
-
+// Exercise 3: 
