@@ -21,9 +21,8 @@ if (now.getTime() >= oneDay || !localStorage.getItem('cryptoCoins')) {
             cryptoCoins.splice(0)
             localStorage.removeItem('cryptoCoins');
             // showing the loading animation
-            $(document).ajaxSend(() => {
-                $("#overlay").fadeIn(300);
-            });
+            // $(document).ajaxSend(() => {});
+            $("#overlay").fadeIn(300);
         },
         complete: () => {
             // hiding the loading animation
