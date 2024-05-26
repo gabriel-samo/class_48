@@ -1,0 +1,167 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+html {
+    font-family: 'Poppins', sans-serif;
+}
+
+html,
+body,
+#root {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    text-align: center;
+    font-style: italic;
+    color: #f7e596;
+    background: linear-gradient(#616c6f, #4c5558);
+}
+
+input {
+    font: inherit;
+    width: 90%;
+    padding: 0.5rem;
+    margin: 0.5rem;
+    background-color: #b4b6c4;
+    border: none;
+    border-radius: 4px;
+}
+
+input[type='button'] {
+    display: block;
+    width: 95%;
+    padding: 0.75rem;
+    margin-top: 1rem;
+    background-color: #f7e596;
+    border: none;
+    border-radius: 4px;
+    font: inherit;
+    font-weight: bold;
+    color: #3a4346;
+    cursor: pointer;
+}
+
+input[type='button']:hover {
+    background-color: #f9e175;
+}
+
+.Box {
+    display: inline-block;
+    min-width: 20rem;
+    background-color: #3a4346;
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    padding: 20px;
+    margin: 10px;
+    border-radius: 6px;
+}
+
+.Box h1,
+h2 {
+    margin-top: 0;
+}
+
+.delete-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+@keyframes fade-slide-in-from-top {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#delete-modal {
+    top: 5rem;
+    min-width: 25rem;
+    min-height: 10rem;
+    background-color: #3a4346;
+    color: #f7e596;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    animation: fade-slide-in-from-top 0.3s ease-in-out;
+}
+
+#delete-modal h2 {
+    font-size: 1.5rem;
+    color: #f7e596;
+    text-transform: uppercase;
+    margin: 0.5rem 0;
+}
+
+#delete-actions {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+
+#delete-actions button {
+    background: transparent;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: black;
+}
+
+#delete-actions button.deleteBtn {
+    background-color: #f7e596;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+#delete-actions button.cancelBtn {
+    background-color: rgba(253, 224, 71, 0.5);
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+#delete-actions button:hover {
+    background-color: rgb(250 204 21);
+}
+
+@keyframes spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner:before {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    margin-top: -10px;
+    margin-left: -20px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    border-top-color: #07d;
+    border-bottom-color: #07d;
+    animation: spinner .8s ease infinite;
+}

@@ -1,0 +1,47 @@
+.MainLayout {
+    height: 100%;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-rows: 10% 85% 5%;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.MainLayout>header,
+.MainLayout>footer {
+    grid-column: span 7;
+}
+
+.MainLayout>main {
+    grid-column: span 6;
+    overflow: auto;
+}
+
+.MainLayout>header {
+    z-index: 1;
+    height: 100%;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    /* top, right, bottom, and left */
+    clip-path: inset(0px 0px -15px 0px);
+    background-color: #3a4346;
+}
+
+.MainLayout>footer {
+    z-index: 0;
+    height: 100%;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    /* top, right, bottom, and left */
+    clip-path: inset(-15px 0px 0px 0px);
+    background-color: #3a4346;
+}
+
+.MainLayout>aside {
+    z-index: 1;
+    overflow: auto;
+    width: 100%;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    /* top, right, bottom, and left */
+    clip-path: inset(0.1px -15px 0.5px 0px);
+    background-color: #3a4346;
+}
+
+.MainLayout>main {}

@@ -16,7 +16,7 @@ app.get('/car/:carNumber', async (req, res) => {
   if (carData.data.result.records.length > 0) {
     res.send(carData.data.result.records[0]);
   } else {
-    res.status(404).send('no car was found')
+    res.status(404).send('no car was found');
   }
 })
 
@@ -25,7 +25,7 @@ app.get('/truck/:carNumber', async (req, res) => {
   if (carData.data.result.records.length > 0) {
     res.send(carData.data.result.records[0]);
   } else {
-    res.status(404).send('no truck was found')
+    res.status(404).send('no truck was found');
   }
 })
 
@@ -34,7 +34,7 @@ app.get('/bike/:carNumber', async (req, res) => {
   if (carData.data.result.records.length > 0) {
     res.send(carData.data.result.records[0]);
   } else {
-    res.status(404).send('no bike was found')
+    res.status(404).send('no bike was found');
   }
 })
 
@@ -43,7 +43,7 @@ app.get('/offroad/:carNumber', async (req, res) => {
   if (carData.data.result.records.length > 0) {
     res.send(carData.data.result.records[0]);
   } else {
-    res.status(404).send('no offroad car was found')
+    res.status(404).send('no offroad car was found');
   }
 })
 
@@ -52,7 +52,7 @@ app.get('/handicap/:carNumber', async (req, res) => {
   if (carData.data.result.records.length > 0) {
     res.send(carData.data.result.records[0]);
   } else {
-    res.status(404).send('no handicap car was found')
+    res.status(404).send('no handicap car was found');
   }
 })
 
@@ -61,7 +61,7 @@ app.get('/recall/:carNumber', async (req, res) => {
   if (carData.data.result.records.length > 0) {
     res.send(carData.data.result.records[0]);
   } else {
-    res.status(404).send('no recall car was found')
+    res.status(404).send('no recall car was found');
   }
 })
 

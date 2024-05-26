@@ -1,0 +1,17 @@
+.UserProfile {
+  width: 40rem;
+  margin-top: 2rem;
+}
+
+.UserProfile .inputField input {
+  background-color: azure;
+  color: black;
+  width: 60%;
+}
+
+.UserProfile .inputField {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}

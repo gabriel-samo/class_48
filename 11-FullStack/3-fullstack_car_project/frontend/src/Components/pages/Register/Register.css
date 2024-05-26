@@ -1,0 +1,17 @@
+.Register {}
+
+.Register .inputField input {
+  background-color: azure;
+  color: black;
+}
+
+.Register .inputField {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.Register .alert {
+  color: red;
+  background-color: red;
+}

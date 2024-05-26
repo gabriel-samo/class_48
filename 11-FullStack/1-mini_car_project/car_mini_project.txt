@@ -1,0 +1,16 @@
+fullstack mini project
+======================
+
+backend (express+typescript) using local storage:
+	routes:
+		1. add car (get car info by license plate from data.gov.il)
+		2. car sold (will not appear in car list)
+		3. search car by manufacturer
+		4. search car by price
+		5. search car by model
+		6. list all sold cars
+
+
+frontend (react+typescript):
+	using the backend with axios
+	show all the option in backend.
