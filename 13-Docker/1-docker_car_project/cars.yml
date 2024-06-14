@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  mysql_db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: "12345678"
+      MYSQL_DATABASE: my_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3316:3306"
+    networks:
+      - cars_network
+
+  phpMyAdmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: mysql_db
+      PMA_USER: user
+      PMA_PASSWORD: password
+    ports:
+      - "7070:80"
+    depends_on:
+      - mysql_db
+    networks:
+      - cars_network
+
+networks:
+  cars_network:
+    driver: bridge
+#to run the docker compose:
+#docker-compose -f cars.yml up -d
+#-f: name of docker compose file (yml file)
+#up: start the containers
+#-d: don't show the result, return to command line (cmd)
