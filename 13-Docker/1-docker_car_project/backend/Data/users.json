@@ -1,0 +1,37 @@
+[
+  {
+    "userName": "Admin",
+    "userPass": "$2b$10$wFBVpFD52losUy4ej42c/eauRq5rR.30p7wr50Vbau.4sI9pVsJr6",
+    "userEmail": "admin@test.com",
+    "userRole": "Admin",
+    "phoneNumber": "0501111111"
+  },
+  {
+    "userName": "Customer",
+    "userPass": "$2b$10$1L4mBsguEie1auNKucx.uO2DKfQwJdDYI5GRcSHe8NzMIk7rx7O7u",
+    "userEmail": "customer@test.com",
+    "userRole": "Customer",
+    "phoneNumber": "0501111111"
+  },
+  {
+    "userName": "Test",
+    "userPass": "$2b$10$tZ62IS.IRg0zxAa0CKEgkeAQBmFuWHWsfoLtVfWAdvjeQexJlo0Ee",
+    "userEmail": "test@test.com",
+    "userRole": "Guest",
+    "phoneNumber": "0501111111"
+  },
+  {
+    "userName": "Test2",
+    "userPass": "$2b$10$X/bIr8mbpNdVn6d4dJcmJOS0sF5dNZlH2ugqVFNKvvJkIOlEWSd3K",
+    "userEmail": "test@test.com",
+    "userRole": "Guest",
+    "phoneNumber": "0501111111"
+  },
+  {
+    "userName": "Test3",
+    "userPass": "$2b$10$yzu.ZPyn8qVQ8imMs7.oLu2csfrzbcIukOSWP6FHGOcVbbyGmC3hG",
+    "userEmail": "test@test.com",
+    "userRole": "Guest",
+    "phoneNumber": "0503333333"
+  }
+]
