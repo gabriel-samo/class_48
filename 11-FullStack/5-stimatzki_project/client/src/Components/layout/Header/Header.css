@@ -1,0 +1,19 @@
+.Header {
+  display: flex;
+  align-content: center;
+  height: 100%;
+}
+
+.Header h1 {
+  margin: auto;
+}
+
+.Header .logo {
+  height: 100%;
+  display: flex;
+}
+
+.Header img {
+  height: 70%;
+  margin: 15% 0;
+}

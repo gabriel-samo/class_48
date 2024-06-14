@@ -20,7 +20,7 @@ loginRouter.post(
 
     //need to expose headers
     if (userData !== undefined && userData["jwt"].length > 10) {
-      // console.log(userData);
+      console.log(userData);
       response
         .status(200)
         .header("Access-Control-Expose-Headers", "Authorization") //do i really need it????
@@ -35,10 +35,11 @@ loginRouter.post(
 loginRouter.post(
   "/registerUser",
   async (request: Request, response: Response, nextFunction: NextFunction) => {
-    if (registerUser(request.body)) {
-      response.status(201).json({ msg: "user was created" });
+    let result: any = await registerUser(request.body);
+    if (!result.errno) {
+      return response.status(200).json({ msg: "User was created" });
     } else {
-      response.status(400).json({ msg: "user already exists" });
+      return response.status(400).json({ msg: result.sqlMessage });
     }
   }
 );

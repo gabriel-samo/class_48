@@ -1,7 +1,6 @@
 import "./Register.css";
 import { SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
-import { useState } from "react";
 import notify from "../../../Utils/Notify";
 import { NavLink, useNavigate } from "react-router-dom";
 

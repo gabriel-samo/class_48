@@ -1,31 +1,23 @@
 import { UserCred } from "./../Models/UserCred";
 import { userCred } from "../Routes/login";
 import { createJWT } from "../Utils/jwt";
+import { OkPacket } from "mysql2";
 const fs = require("fs");
+import dal_mysql from "../DAL/dal_mysql";
 
-const registerUser = (user: UserCred) => {
-  let userInfo;
+const registerUser = async (user: UserCred) => {
   try {
-    userInfo = JSON.parse(fs.readFileSync("users.data"));
+    const sql = `
+        INSERT INTO users
+        Values (0, '${user.userName}', '${user.userPass}','${user.userRole}','${user.userEmail}')
+    `;
+    const result: OkPacket = await dal_mysql.execute(sql);
+    // console.log(`Created user with id:${result.insertId}`);
+    user.id = +result.insertId;
+    return result;
   } catch (err) {
-    userInfo = [];
+    return err;
   }
-  //check if user exists before saving the user.
-  let singleUser = userInfo.find(
-    (item: { userName: string }) => item.userName === user.userName
-  );
-  if (singleUser !== undefined) {
-    console.log(singleUser);
-    return false;
-  }
-  console.log(singleUser);
-  if (user.userRole === "") {
-    user.userRole = "Guest";
-  }
-  //add the new user to our file
-  userInfo.push(user);
-  fs.writeFileSync("users.data", JSON.stringify(userInfo));
-  return true;
 };
 
 const loginUser = (user: UserCred) => {

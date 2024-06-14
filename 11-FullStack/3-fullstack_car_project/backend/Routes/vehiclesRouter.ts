@@ -2,7 +2,7 @@ import {
   Router,
   type Request,
   type Response,
-  type NextFunction,
+  type NextFunction
 } from "express";
 import {
   getBike,
@@ -10,7 +10,7 @@ import {
   getHandicap,
   getOffRoad,
   getRecall,
-  getTruck,
+  getTruck
 } from "../Logic/vehicleLogic";
 import { checkJWT } from "../Utils/jwt";
 
@@ -20,18 +20,18 @@ const vehiclesRouter = Router();
 vehiclesRouter.get(
   "/car/:id",
   async (req: Request, res: Response, next: NextFunction) => {
-    const jwt = checkJWT(req.header("Authorization") || "");
-    if (jwt.length > 10) {
-      const id = req.params.id;
-      const carData = await getCar(id);
-      res
-        .status(200)
-        .header("Access-Control-Expose-Headers", "Authorization")
-        .header("Authorization", jwt)
-        .json(carData);
-    } else {
-      res.status(401).json({ msg: "Not authorized! please login..." });
-    }
+    // const jwt = checkJWT(req.header("Authorization") || "");
+    // if (jwt.length > 10) {
+    const id = req.params.id;
+    const carData = await getCar(id);
+    res
+      .status(200)
+      // .header("Access-Control-Expose-Headers", "Authorization")
+      // .header("Authorization", jwt)
+      .json(carData);
+    // } else {
+    // res.status(401).json({ msg: "Not authorized! please login..." });
+    // }
   }
 );
 

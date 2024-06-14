@@ -1,0 +1,45 @@
+.BookList {
+}
+
+.BookList a {
+  display: block;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #373f41;
+  color: #f7e596;
+  text-decoration: none;
+  font-size: larger;
+}
+
+.BookList a:hover {
+  background-color: #f7e596;
+  color: #3a4346;
+}
+
+.BookList span {
+  color: #ffffff;
+}
+
+.BookList p {
+  text-align: start;
+}
+
+.BookList .cardTitle {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.BookList .cardTitle h2 {
+  max-height: 3rem;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+
+.BookList input[type="button"] {
+  width: 5rem;
+}
