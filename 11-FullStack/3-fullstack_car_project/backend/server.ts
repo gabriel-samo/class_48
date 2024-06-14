@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
-import "dotenv/config";
 import usersRouter from "./Routes/usersRouter";
 import vehiclesRouter from "./Routes/vehiclesRouter";
+import { config } from "./Utils/config";
 
 const app = express();
 // middleware or allowing cors
@@ -15,6 +15,6 @@ app.use("/vehicles", vehiclesRouter);
 // http://localhost:8080/users
 app.use("/users", usersRouter);
 
-app.listen(process.env.PORT, () => {
-  console.log(`http://${process.env.HOST}:${process.env.PORT}`);
+app.listen(config.app.port, () => {
+  console.log(`http://${config.app.host}:${config.app.port}`);
 });

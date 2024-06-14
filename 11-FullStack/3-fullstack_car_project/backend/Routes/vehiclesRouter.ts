@@ -16,12 +16,13 @@ import { checkJWT } from "../Utils/jwt";
 
 const vehiclesRouter = Router();
 
-// http://localhost:8080/vehicles/car/:id
+// http://localhost:8123/vehicles/car/:id
 vehiclesRouter.get(
   "/car/:id",
   async (req: Request, res: Response, next: NextFunction) => {
     // const jwt = checkJWT(req.header("Authorization") || "");
     // if (jwt.length > 10) {
+    console.log("works");
     const id = req.params.id;
     const carData = await getCar(id);
     res
@@ -35,7 +36,7 @@ vehiclesRouter.get(
   }
 );
 
-// http://localhost:8080/vehicles/bike/:id
+// http://localhost:8123/vehicles/bike/:id
 vehiclesRouter.get(
   "/bike/:id",
   async (req: Request, res: Response, next: NextFunction) => {
@@ -50,7 +51,7 @@ vehiclesRouter.get(
   }
 );
 
-// http://localhost:8080/vehicles/truck/:id
+// http://localhost:8123/vehicles/truck/:id
 vehiclesRouter.get(
   "/truck/:id",
   async (req: Request, res: Response, next: NextFunction) => {
@@ -65,7 +66,7 @@ vehiclesRouter.get(
   }
 );
 
-// http://localhost:8080/vehicles/handicap/:id
+// http://localhost:8123/vehicles/handicap/:id
 vehiclesRouter.get(
   "/handicap/:id",
   async (req: Request, res: Response, next: NextFunction) => {
@@ -80,7 +81,7 @@ vehiclesRouter.get(
   }
 );
 
-// http://localhost:8080/vehicles/offRoad/:id
+// http://localhost:8123/vehicles/offRoad/:id
 vehiclesRouter.get(
   "/offRoad/:id",
   async (req: Request, res: Response, next: NextFunction) => {
@@ -95,7 +96,7 @@ vehiclesRouter.get(
   }
 );
 
-// http://localhost:8080/vehicles/recall/:id
+// http://localhost:8123/vehicles/recall/:id
 vehiclesRouter.get(
   "/recall/:id",
   async (req: Request, res: Response, next: NextFunction) => {

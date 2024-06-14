@@ -2,18 +2,18 @@ import {
   Router,
   type Request,
   type Response,
-  type NextFunction,
+  type NextFunction
 } from "express";
 import {
   forgotPassword,
   loginUser,
   registerUser,
-  updateUser,
+  updateUser
 } from "../Logic/usersLogic";
 
 const usersRouter = Router();
 
-// http://localhost:8080/users/register
+// http://localhost:8123/users/register
 usersRouter.post(
   "/register",
   async (req: Request, res: Response, next: NextFunction) => {
@@ -31,7 +31,7 @@ usersRouter.post(
       userPass,
       userEmail,
       userRole,
-      phoneNumber,
+      phoneNumber
     };
     const createdUser = await registerUser(newUser);
     if (!createdUser) {
@@ -44,7 +44,7 @@ usersRouter.post(
   }
 );
 
-// http://localhost:8080/users/login
+// http://localhost:8123/users/login
 usersRouter.post(
   "/login",
   async (req: Request, res: Response, next: NextFunction) => {
@@ -69,7 +69,7 @@ usersRouter.post(
   }
 );
 
-// http://localhost:8080/users/forgotPassword/:userName
+// http://localhost:8123/users/forgotPassword/:userName
 usersRouter.post(
   "/forgotPassword/:userName",
   async (req: Request, res: Response, next: NextFunction) => {
@@ -86,7 +86,7 @@ usersRouter.post(
   }
 );
 
-// http://localhost:8080/users/updateUser/:userName
+// http://localhost:8123/users/updateUser/:userName
 usersRouter.post(
   "/updateUser/:userName",
   async (req: Request, res: Response, next: NextFunction) => {
