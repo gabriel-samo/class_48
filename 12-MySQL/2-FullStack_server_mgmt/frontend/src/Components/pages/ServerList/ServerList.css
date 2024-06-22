@@ -1,0 +1,64 @@
+.ServerList {
+}
+
+.ServerList .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ServerList .filters {
+  width: 50% !important;
+}
+
+.ServerList .filter {
+  border-radius: 10px !important;
+}
+
+.ServerList a {
+  display: block;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #373f41;
+  color: #f7e596;
+  text-decoration: none;
+  font-size: larger;
+}
+
+.ServerList a:hover {
+  background-color: #f7e596;
+  color: #3a4346;
+}
+
+.ServerList span {
+  color: #ffffff;
+}
+
+.ServerList .time {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.ServerList p {
+  text-align: start;
+}
+
+.ServerList .cardTitle {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ServerList input[type="button"] {
+  margin: auto;
+  width: 5rem;
+}
+
+.ServerList h2 {
+  margin-bottom: 0;
+}
