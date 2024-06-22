@@ -1,0 +1,54 @@
+.AddMeeting {
+}
+
+.AddMeeting form {
+  width: 70%;
+}
+
+.AddMeeting .inputField {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.AddMeeting .inputField label {
+  text-align: start;
+  flex: 1.25;
+}
+
+.AddMeeting .inputField input,
+select,
+.react-datepicker-wrapper {
+  flex: 2;
+  background-color: azure;
+  color: black;
+  padding: 8px;
+}
+
+.AddMeeting .react-datepicker-wrapper {
+  flex: 2;
+  padding: 0 0.5rem;
+}
+
+.AddMeeting input[type="submit"] {
+  width: 95%;
+  cursor: pointer;
+  background-color: #f7e596;
+}
+
+.AddMeeting input[type="submit"]:hover {
+  background-color: #f9e175;
+}
+
+.AddMeeting .alert {
+  text-align: end;
+  margin: 0;
+  color: red;
+  font-size: 12px;
+}
+
+.AddMeeting .time {
+  padding: 0;
+  width: 95%;
+  margin: 0;
+}

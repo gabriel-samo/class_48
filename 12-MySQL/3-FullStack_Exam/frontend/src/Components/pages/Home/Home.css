@@ -1,0 +1,11 @@
+.Home {
+}
+
+.Home span {
+  color: white;
+  font-weight: 600;
+}
+
+.Home select {
+  width: 30%;
+}

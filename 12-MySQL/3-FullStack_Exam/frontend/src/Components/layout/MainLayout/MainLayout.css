@@ -1,0 +1,35 @@
+.MainLayout {
+  height: 100%;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: 10% 85% 5%;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.MainLayout > header,
+.MainLayout > footer {
+  grid-column: span 6;
+}
+
+.MainLayout > main {
+  overflow: auto;
+  grid-column: span 5;
+}
+
+.MainLayout > header {
+  height: 100%;
+  background-color: #3a4346;
+}
+
+.MainLayout > aside {
+  width: 100%;
+  overflow: auto;
+  background-color: #3a4346;
+}
+
+.MainLayout > main {
+}
+
+.MainLayout > footer {
+  background-color: #3a4346;
+}
