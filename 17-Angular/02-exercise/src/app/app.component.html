@@ -1,0 +1,16 @@
+<main [ngClass]="colorClasses[index]">
+  <!-- <h1>Calculate age</h1>
+  <input
+    type="number"
+    placeholder="Enter your birth year"
+    (input)="calcAge($event)"
+  />
+  <p *ngIf="age && age >= 20 && age <= 30; else elseBlock" appSuccess>
+    Age: {{ age }}
+  </p>
+  <ng-template #elseBlock
+    ><p appError>Age: {{ age }}</p></ng-template
+  > -->
+  <h1>Change background with class</h1>
+  <button (click)="changeColor()">Next</button>
+</main>

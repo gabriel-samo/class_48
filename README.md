@@ -1,1 +1,1 @@
-My Fullstack course on Jhon Bryce folder.
+# My Fullstack course on John Bryce folder.

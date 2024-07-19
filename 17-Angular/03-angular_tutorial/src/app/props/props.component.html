@@ -1,0 +1,7 @@
+<div class="container" style="text-align: center">
+  <h2>Welcome to {{ title }}</h2>
+  <div class="user_inputs">
+    <app-user-input (addProdEvent)="addProduct($event)" />
+    <app-list [perot]="listFruits_ar" />
+  </div>
+</div>

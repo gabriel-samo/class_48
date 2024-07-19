@@ -1,0 +1,35 @@
+<div id="container">
+  <hr />
+  <h1 class="text-primary">Exercise 1</h1>
+  <ul>
+    @for (name of names; track $index) {
+    <li [ngClass]="$index % 2 === 0 ? 'light' : 'dark'">{{ name }}</li>
+    }
+    <!-- <li
+      *ngFor="let name of names; let i = index"
+      [ngClass]="i % 2 === 0 ? 'light' : 'dark'"
+    >
+      {{ name }}
+    </li> -->
+  </ul>
+  <hr />
+  <h1>Exercise 2</h1>
+  <ul>
+    @for(gender of genders; track $index) { @switch (gender) { @case ('boy') {
+    <li ngClass="boy">{{ gender }}</li>
+    } @case ('girl') {
+    <li ngClass="girl">{{ gender }}</li>
+    } @default {
+    <li ngClass="dark">{{ gender }}</li>
+    } } }
+    <!-- <li *ngFor="let gender of genders" [ngSwitch]="gender">
+      <span *ngSwitchCase="'boy'" ngClass="boy">{{ gender }}</span>
+      <span *ngSwitchCase="'girl'" ngClass="girl">{{ gender }}</span>
+      <span *ngSwitchDefault ngClass="dark">{{ gender }}</span>
+    </li> -->
+  </ul>
+  <hr />
+  <h1>Exercise 3</h1>
+  <app-props />
+  <hr />
+</div>
