@@ -1,0 +1,78 @@
+version: "3.8"
+
+services:
+  web:
+    container_name: project-3-web-c
+    depends_on:
+      - api
+    image: project-3-web-i
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 5173:5173
+    networks:
+      - project-3_network
+    develop:
+      watch:
+        - path: ./frontend/package.json
+          action: rebuild
+        - path: ./frontend/package-lock.json
+          action: rebuild
+        - path: ./frontend
+          target: /app
+          action: sync
+
+  api:
+    container_name: project-3-api-c
+    depends_on:
+      - mysql_db
+    image: project-3-api-i
+    env_file: "backend/api.env"
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend/assets:/app/assets
+      - /app/node_modules
+    ports:
+      - 8000:8000
+    networks:
+      - project-3_network
+    develop:
+      watch:
+        - path: ./backend/package.json
+          action: rebuild
+        - path: ./backend/package-lock.json
+          action: rebuild
+        - path: ./backend
+          target: /app
+          action: sync+restart
+
+  mysql_db:
+    image: mysql:8
+    env_file: "mysql.env"
+    ports:
+      - 3316:3306
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - project-3_network
+
+  phpMyAdmin:
+    image: phpmyadmin/phpmyadmin
+    env_file: "phpMyAdmin.env"
+    ports:
+      - 7070:80
+    depends_on:
+      - mysql_db
+    networks:
+      - project-3_network
+
+networks:
+  project-3_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    external: false

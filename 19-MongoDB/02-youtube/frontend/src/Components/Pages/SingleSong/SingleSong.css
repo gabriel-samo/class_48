@@ -1,0 +1,25 @@
+.SingleSong {
+    text-align: left;
+}
+
+.SingleSong .Grid-Parent {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    grid-gap: 20px;
+    width: 100%;
+}
+
+.SingleSong .Grid-Child {
+    margin: 10px;
+}
+
+.SingleSong .Title-Header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.SingleSong .desc {
+    max-width: 60rem;
+    max-height: 10rem;
+    overflow: auto;
+}

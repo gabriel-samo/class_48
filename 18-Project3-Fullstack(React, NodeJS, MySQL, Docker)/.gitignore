@@ -1,0 +1,5 @@
+node_modules/
+database/
+18-Project3-Fullstack-update-*
+*.dockerignore
+*.env
