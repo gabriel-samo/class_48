@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Socket IO Tutorial</title>
+    <style>
+      body {
+        text-align: center;
+        font-family: Arial, sans-serif;
+        font-size: 1.2rem;
+        padding: 20px;
+      }
+
+      #messages {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      #messages li {
+        padding: 5px 10px;
+        background-color: #f0f0f0;
+        margin: 5px;
+        border-radius: 5px;
+      }
+    </style>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <h1>Socket IO Tutorial</h1>
+    <form id="chatForm" autocomplete="off">
+      <input type="text" id="message" placeholder="Enter message" />
+      <button id="send">Send</button>
+    </form>
+    <ul id="messages"></ul>
+    <script>
+      const socket = io();
+
+      // send chat message
+      $("#chatForm").on("submit", function (e) {
+        socket.emit("chat message", $("#message").val());
+        $("#message").val("");
+        return false;
+      });
+
+      // receive and display chat message
+      socket.on("chat message", function (msg) {
+        $("#messages").append($("<li>").text(msg));
+      });
+    </script>
+  </body>
+</html>

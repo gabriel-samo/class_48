@@ -1,4 +1,4 @@
-import logo from "../assets/vacation-log.png";
+import vacationPhoto from "../assets/vacation-photo.jpg";
 
 import { motion } from "framer-motion";
 import { container, item } from "../utils/animtaionConf";
@@ -11,30 +11,42 @@ function Home() {
   const navigate = useNavigate();
   return (
     <div>
-      <div className="flex flex-col gap-4 items-center h-screen">
+      <div className="flex flex-col gap-4 items-center h-screen text-white">
+        <motion.img
+          variants={container}
+          initial="hidden"
+          animate="visible"
+          src={vacationPhoto}
+          alt="vacation photo"
+          className="absolute right-0 h-full w-full object-cover blur-sm"
+        />
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-gray-900 to-75%"></div>
         <motion.div
           variants={container}
           initial="hidden"
           animate="visible"
-          className="flex lg:flex-row flex-col items-center gap-4"
+          className="z-10 flex lg:flex-row flex-col items-center gap-4"
         >
           <motion.div
             variants={item}
-            className="flex flex-1 flex-col justify-center items-center gap-10"
+            className="flex flex-1 flex-col justify-center items-start gap-10 p-10"
           >
-            <h1 className="sm:text-9xl md:text-7xl text-5xl font-bold">
+            <h1 className="sm:text-9xl text-6xl font-bold">
               <i>Vacations</i>
             </h1>
-            <p className="sm:text-2xl overflow-auto text-center">
+            <p className="sm:text-2xl overflow-auto text-start sm:w-1/2 w-full">
               Plan your next vacation with us and get a personalized list of
-              destinations to explore.
+              destinations to explore. Welcome to vacation project, your gateway
+              to unforgettable adventures around the world. Our expertly curated
+              vacation packages cater to all types of travelers, whether you
+              seek relaxation, cultural immersion, or thrilling adventures.
             </p>
             {currentUser.token ? (
               <Button color="blue" onClick={() => navigate("/vacations")}>
                 View Vacations
               </Button>
             ) : (
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 bg-gray-700 p-6 rounded-lg shadow-lg text-white">
                 <p className="text-2xl">
                   To get started, please login or register.
                 </p>
@@ -53,12 +65,6 @@ function Home() {
               </div>
             )}
           </motion.div>
-          <motion.img
-            variants={item}
-            src={logo}
-            alt="logo"
-            className="flex-1 h-[30rem] w-[30rem] object-cover"
-          />
         </motion.div>
       </div>
     </div>
