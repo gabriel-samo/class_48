@@ -2,14 +2,17 @@ import Skeleton from "../components/Skeleton";
 import VacationCard from "../components/VacationCard";
 
 import { motion } from "framer-motion";
+import { decodeToken } from "react-jwt";
 import { useEffect, useState } from "react";
 import { Vacation } from "../models/vacation";
+import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../redux/hooks";
 import { makeRequest } from "../utils/makeRequest";
 import { Button, Pagination } from "flowbite-react";
 import { container, item } from "../utils/animtaionConf";
 
 function Vacations() {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -18,8 +21,12 @@ function Vacations() {
     "followed" | "all" | "not-started" | "active"
   >("all");
   const currentUser = useAppSelector((state) => state.currentUser);
+  const isAdmin = decodeToken<{ isAdmin: boolean }>(currentUser.token)?.isAdmin;
 
   useEffect(() => {
+    if (isAdmin) {
+      setCurrentFilter("all");
+    }
     setIsLoading(true);
     makeRequest(currentUser.token)
       .get(
@@ -46,46 +53,62 @@ function Vacations() {
           <i>Vacations</i>
         </h1>
         <div className="flex felx-row items-center gap-1">
-          <Button
-            outline={currentFilter !== "all"}
-            color="blue"
-            onClick={async () => {
-              setCurrentFilter("all");
-              setCurrentPage(1);
-            }}
-          >
-            All
-          </Button>
-          <Button
-            outline={currentFilter !== "followed"}
-            color="blue"
-            onClick={async () => {
-              setCurrentFilter("followed");
-              setCurrentPage(1);
-            }}
-          >
-            Followed
-          </Button>
-          <Button
-            outline={currentFilter !== "not-started"}
-            color="blue"
-            onClick={async () => {
-              setCurrentFilter("not-started");
-              setCurrentPage(1);
-            }}
-          >
-            Not Started
-          </Button>
-          <Button
-            outline={currentFilter !== "active"}
-            color="blue"
-            onClick={async () => {
-              setCurrentFilter("active");
-              setCurrentPage(1);
-            }}
-          >
-            Active
-          </Button>
+          {isAdmin ? (
+            <>
+              <Button
+                color="blue"
+                outline
+                onClick={() => {
+                  navigate("/add-vacation");
+                }}
+              >
+                Add Vacation
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                outline={currentFilter !== "all"}
+                color="blue"
+                onClick={async () => {
+                  setCurrentFilter("all");
+                  setCurrentPage(1);
+                }}
+              >
+                All
+              </Button>
+              <Button
+                outline={currentFilter !== "followed"}
+                color="blue"
+                onClick={async () => {
+                  setCurrentFilter("followed");
+                  setCurrentPage(1);
+                }}
+              >
+                Followed
+              </Button>
+              <Button
+                outline={currentFilter !== "not-started"}
+                color="blue"
+                onClick={async () => {
+                  setCurrentFilter("not-started");
+                  setCurrentPage(1);
+                }}
+              >
+                Not Started
+              </Button>
+              <Button
+                outline={currentFilter !== "active"}
+                color="blue"
+                onClick={async () => {
+                  setCurrentFilter("active");
+                  setCurrentPage(1);
+                }}
+              >
+                Active
+              </Button>
+            </>
+          )}
         </div>
         <Pagination
           className="text-center"

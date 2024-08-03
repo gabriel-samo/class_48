@@ -1,14 +1,15 @@
 import vacationPhoto from "../assets/vacation-photo.jpg";
 
 import { motion } from "framer-motion";
-import { container, item } from "../utils/animtaionConf";
 import { Button } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../redux/hooks";
+import { container, item } from "../utils/animtaionConf";
 
 function Home() {
   const currentUser = useAppSelector((state) => state.currentUser);
   const navigate = useNavigate();
+
   return (
     <div>
       <div className="flex flex-col gap-4 items-center h-screen text-white">

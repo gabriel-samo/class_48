@@ -1,6 +1,6 @@
 import "./styles/styles.css";
 
-import { StrictMode } from "react";
+// import { StrictMode } from "react";
 import { Provider } from "react-redux";
 import { store } from "./redux/store.ts";
 import { BrowserRouter } from "react-router-dom";
@@ -13,9 +13,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
     <BrowserRouter>
       <ThemeProvider>
-        <StrictMode>
-          <AppRoutes />
-        </StrictMode>
+        {/* <StrictMode> */}
+        <AppRoutes />
+        {/* </StrictMode> */}
       </ThemeProvider>
     </BrowserRouter>
   </Provider>

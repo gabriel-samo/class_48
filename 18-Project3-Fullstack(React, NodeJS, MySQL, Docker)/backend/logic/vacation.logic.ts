@@ -12,17 +12,6 @@ export const getAllVacations = async (
     const { offset } = req.query;
     let vacations: VacationModel[] = [];
 
-    console.log(req.currentUser);
-    if (req.currentUser?.isAdmin) {
-      vacations = await Query("SELECT * FROM vacations");
-      const totalRows = await Query(
-        "SELECT COUNT(*) AS totalRows FROM vacations"
-      );
-      return res
-        .status(200)
-        .json({ vacations, totalRows: totalRows[0]["totalRows"] });
-    }
-
     if (offset) {
       vacations = await Query(
         "SELECT * FROM vacations ORDER BY start_date ASC LIMIT 9 OFFSET ?",

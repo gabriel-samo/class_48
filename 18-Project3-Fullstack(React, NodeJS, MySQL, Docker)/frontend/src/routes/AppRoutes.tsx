@@ -10,22 +10,10 @@ import PrivateRoute from "../components/PrivateRoute";
 
 import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
+import AdminRoutes from "../components/AdminRoutes";
+import AddVacation from "../pages/AddVacation";
 
 function AppRoutes() {
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   try {
-  //     if (img) {
-  //       const res = await uploadImage(img);
-  //       console.log(res);
-  //     } else {
-  //       console.log("No image");
-  //     }
-  //   } catch (error: any) {
-  //     console.log(error);
-  //   }
-  // };
-
   // Scroll restoration
   useEffect(() => {
     window.history.scrollRestoration = "manual";
@@ -39,6 +27,9 @@ function AppRoutes() {
         <Route path="/login" element={<Login />} />
         <Route element={<PrivateRoute />}>
           <Route path="/vacations" element={<Vacations />} />
+        </Route>
+        <Route element={<AdminRoutes />}>
+          <Route path="/add-vacation" element={<AddVacation />} />
         </Route>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />

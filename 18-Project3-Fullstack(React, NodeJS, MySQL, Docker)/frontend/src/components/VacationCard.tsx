@@ -1,12 +1,13 @@
 import moment from "moment";
 
-import { FaHeart } from "react-icons/fa";
+import { FaHeart, FaTrash, FaPencilAlt } from "react-icons/fa";
 import { IoMdCalendar } from "react-icons/io";
 import { Vacation } from "../models/vacation";
 import { ShowMore } from "@re-dev/react-truncate";
 import { useEffect, useState } from "react";
 import { makeRequest } from "../utils/makeRequest";
 import { useAppSelector } from "../redux/hooks";
+import { decodeToken } from "react-jwt";
 
 type VacationCardProps = {
   vacation: Vacation;
@@ -15,6 +16,8 @@ type VacationCardProps = {
 function VacationCard({ vacation }: VacationCardProps) {
   const currentUser = useAppSelector((state) => state.currentUser);
   const [followersIds, setFollowersIds] = useState<number[]>([]);
+
+  const decodedToken = decodeToken<{ isAdmin: boolean }>(currentUser.token);
 
   const getFollowersIds = async () => {
     try {
@@ -55,21 +58,40 @@ function VacationCard({ vacation }: VacationCardProps) {
         />
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black to-50%"></div>
       </div>
-      <button
-        className={`absolute top-4 left-4 p-2 min-w-28 h-10 text-gray-500 rounded-full flex justify-center items-center gap-2 transition-colors 
+      {!decodedToken?.isAdmin ? (
+        <button
+          className={`absolute top-4 left-4 p-2 min-w-28 h-10 text-gray-500 rounded-full flex justify-center items-center gap-2 transition-colors 
           ${
             followersIds.includes(+currentUser.id)
               ? "bg-red-200 hover:bg-red-100"
               : "bg-gray-200 hover:bg-gray-100"
           }`}
-        onClick={handleFollow}
-      >
-        <FaHeart
-          color={`${followersIds.includes(+currentUser.id) ? "red" : "gray"}`}
-        />
-        <div>{followersIds.includes(+currentUser.id) ? "Unlike" : "Like"}</div>
-        <div>{followersIds.length}</div>
-      </button>
+          onClick={handleFollow}
+        >
+          <FaHeart
+            color={`${followersIds.includes(+currentUser.id) ? "red" : "gray"}`}
+          />
+          <div>
+            {followersIds.includes(+currentUser.id) ? "Unlike" : "Like"}
+          </div>
+          <div>{followersIds.length}</div>
+        </button>
+      ) : (
+        <div>
+          <button
+            className={`absolute top-4 left-4 p-2 min-w-24 h-10 text-gray-500 rounded-full flex justify-center items-center gap-2 transition-colors bg-gray-200 hover:bg-gray-100`}
+          >
+            <FaPencilAlt color="gray" />
+            <div>Edit</div>
+          </button>
+          <button
+            className={`absolute top-4 left-32 p-2 min-w-24 h-10 text-gray-500 rounded-full flex justify-center items-center gap-2 transition-colors bg-gray-200 hover:bg-gray-100`}
+          >
+            <FaTrash color="gray" />
+            <div>Delete</div>
+          </button>
+        </div>
+      )}
       <h2 className="text-white text-2xl font-bold absolute top-44 left-6">
         {vacation.destination}
       </h2>
