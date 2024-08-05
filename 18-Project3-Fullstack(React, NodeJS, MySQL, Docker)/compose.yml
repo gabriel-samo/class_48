@@ -33,6 +33,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     volumes:
+      # - ./backend:/app
       - ./backend/assets:/app/assets
       - /app/node_modules
     ports:
@@ -46,6 +47,8 @@ services:
         - path: ./backend/package-lock.json
           action: rebuild
         - path: ./backend
+          ignore:
+            - assets
           target: /app
           action: sync+restart
 

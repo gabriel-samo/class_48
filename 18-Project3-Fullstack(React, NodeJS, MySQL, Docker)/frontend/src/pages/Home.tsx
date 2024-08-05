@@ -1,14 +1,24 @@
 import vacationPhoto from "../assets/vacation-photo.jpg";
 
+import { useEffect } from "react";
+import { isExpired } from "react-jwt";
 import { motion } from "framer-motion";
 import { Button } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../redux/hooks";
+import { logoutUser } from "../redux/slices/userSlice";
 import { container, item } from "../utils/animtaionConf";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
 function Home() {
   const currentUser = useAppSelector((state) => state.currentUser);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isExpired(currentUser.token.split(" ")[1])) {
+      dispatch(logoutUser());
+    }
+  }, []);
 
   return (
     <div>

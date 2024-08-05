@@ -6,9 +6,9 @@ export const uploadImage = async (image: File) => {
     const formData = new FormData();
     if (image) formData.append("image", image);
     const res = await makeRequest().post(
-      `/api/images/upload/${image.name}-${moment().format(
-        "YYYY-MM-DD_HH:mm:ss"
-      )}`,
+      `/api/images/upload/${moment().format("DD-MM-YY-HH-mm-ss")}-${
+        image.name
+      }`,
       formData
     );
     return res;

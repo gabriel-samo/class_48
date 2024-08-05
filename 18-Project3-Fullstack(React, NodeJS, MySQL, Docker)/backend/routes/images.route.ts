@@ -5,6 +5,6 @@ import { getImage, uploadImage } from "../logic/images.logic";
 const imagesRouter = Router();
 
 imagesRouter.get("/:countryName", getImage);
-imagesRouter.post("/upload/:countryName", upload.single("image"), uploadImage);
+imagesRouter.post("/upload/:fileName", upload.single("image"), uploadImage);
 
 export default imagesRouter;

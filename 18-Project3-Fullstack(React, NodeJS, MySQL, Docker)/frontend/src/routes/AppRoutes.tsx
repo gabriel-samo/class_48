@@ -6,12 +6,13 @@ import Register from "../pages/Register";
 import Vacations from "../pages/Vacations";
 import MyFooter from "../components/MyFooter";
 import MyHeader from "../components/MyHeader";
+import AddVacation from "../pages/AddVacation";
+import AdminRoutes from "../components/AdminRoutes";
+import UpdateVacation from "../pages/UpdateVacation";
 import PrivateRoute from "../components/PrivateRoute";
 
 import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import AdminRoutes from "../components/AdminRoutes";
-import AddVacation from "../pages/AddVacation";
 
 function AppRoutes() {
   // Scroll restoration
@@ -23,16 +24,17 @@ function AppRoutes() {
     <>
       <MyHeader />
       <Routes>
-        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route element={<PrivateRoute />}>
           <Route path="/vacations" element={<Vacations />} />
         </Route>
         <Route element={<AdminRoutes />}>
           <Route path="/add-vacation" element={<AddVacation />} />
+          <Route path="/update-vacation/:id" element={<UpdateVacation />} />
         </Route>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
         <Route path="*" element={<Page404 />} />
       </Routes>
       <MyFooter />

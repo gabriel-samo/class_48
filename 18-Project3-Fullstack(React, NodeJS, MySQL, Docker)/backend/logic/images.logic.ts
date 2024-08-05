@@ -1,6 +1,7 @@
 import fs from "fs/promises";
 import { config } from "../config";
 import { NextFunction, Request, Response } from "express";
+import moment from "moment";
 
 export const getImage = async (
   req: Request,
@@ -31,7 +32,7 @@ export const uploadImage = async (
 ) => {
   try {
     return res.status(200).json({
-      imageUrl: `http://${config.app.host}:${config.app.port}/api/images/${req.file?.filename}`
+      imageUrl: `http://${config.app.host}:${config.app.port}/api/images/${req.params.fileName}`
     });
   } catch (error: any) {
     return res.status(500).json(error.message);

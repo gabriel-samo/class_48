@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../redux/hooks";
-import { SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useEffect, useState } from "react";
 import { makeRequest } from "../utils/makeRequest";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
@@ -17,6 +17,7 @@ import {
 } from "flowbite-react";
 import { container } from "../utils/animtaionConf";
 import { uploadImage } from "../utils/uploadImage";
+import { Vacation } from "../models/vacation";
 
 type AddVacationInputs = {
   destination: string;
@@ -27,13 +28,17 @@ type AddVacationInputs = {
   image: string;
 };
 
-function AddVacation() {
-  const [addVacationError, setAddVacationError] = useState<string | null>(null);
-  const [addVacationLoading, setAddVacationLoading] = useState(false);
-  const [addVacationSuccess, setAddVacationSuccess] = useState(false);
-  const [showImage, setShowImage] = useState(false);
+function UpdateVacation() {
+  const [currentVacation, setCurrentVacation] = useState<Vacation | null>(null);
+  const [updateVacationError, setUpdateVacationError] = useState<string | null>(
+    null
+  );
+  const [updateVacationLoading, setUpdateVacationLoading] = useState(false);
+  const [updateVacationSuccess, setUpdateVacationSuccess] = useState(false);
+  const [imageChanged, setImageChanged] = useState(false);
 
   const currentUser = useAppSelector((state) => state.currentUser);
+  const { id: vacationId } = useParams();
   const navigate = useNavigate();
 
   const {
@@ -44,47 +49,60 @@ function AddVacation() {
     formState: { errors }
   } = useForm<AddVacationInputs>();
 
+  useEffect(() => {
+    makeRequest(currentUser.token)
+      .get(`/api/vacations/one/${vacationId}`)
+      .then((res) => {
+        setCurrentVacation(res.data[0]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   const handleUploadImage = async (e: SyntheticEvent) => {
     e.preventDefault();
-    setShowImage(false);
+    setImageChanged(false);
     const target = e.target as HTMLInputElement;
     try {
       if (target.files && target.files[0]) {
         const res = await uploadImage(target.files[0]);
         setValue("image", res?.data.imageUrl);
-        setShowImage(true);
+        setImageChanged(true);
       } else {
         console.log("No image uploaded");
       }
     } catch (error: any) {
       console.log(error);
-      setShowImage(false);
+      setUpdateVacationError("An error occurred while uploading image");
     }
   };
 
   const onSubmit: SubmitHandler<AddVacationInputs> = async (formInputs) => {
-    setAddVacationError(null);
-    setAddVacationLoading(true);
-    setAddVacationSuccess(false);
-    // console.log(formInputs);
+    setUpdateVacationError(null);
+    setUpdateVacationLoading(true);
+    setUpdateVacationSuccess(false);
     try {
+      if (!formInputs.image.length) {
+        formInputs.image = currentVacation?.image!;
+      }
       const res = await makeRequest(currentUser.token).post(
-        "/api/vacations/new",
+        `/api/vacations/update/${vacationId}`,
         formInputs
       );
       if (res.status === 200) {
-        setAddVacationSuccess(true);
+        setUpdateVacationSuccess(true);
         setTimeout(() => {
           navigate("/vacations");
         }, 2000);
       } else {
-        setAddVacationError(res.data);
+        setUpdateVacationError(res.data);
       }
     } catch (error: any) {
       console.error(error);
-      setAddVacationError("An error occurred while adding vacation");
-      setAddVacationLoading(false);
-      setAddVacationSuccess(false);
+      setUpdateVacationError("An error occurred while updating vacation");
+      setUpdateVacationLoading(false);
+      setUpdateVacationSuccess(false);
     }
   };
 
@@ -105,13 +123,14 @@ function AddVacation() {
           label="Destination"
           variant="filled"
           type="text"
+          defaultValue={currentVacation?.destination}
           {...register("destination", {
             required: true
           })}
           color={errors.destination ? "error" : "default"}
           helperText={
             errors.destination?.type === "required"
-              ? "Destination is required"
+              ? "Destination must be changed"
               : ""
           }
         />
@@ -121,13 +140,14 @@ function AddVacation() {
             id="description"
             className="bg-zinc-100 dark:bg-gray-700 dark:text-white dark:placeholder:text-white"
             rows={4}
+            defaultValue={currentVacation?.description}
             {...register("description", {
               required: true
             })}
-            color={errors.description ? "error" : "default"}
+            color={errors.description ? "failure" : ""}
             helperText={
               errors.description?.type === "required"
-                ? "Description is required"
+                ? "Description must be changed"
                 : ""
             }
           />
@@ -136,12 +156,10 @@ function AddVacation() {
           label="Start Date"
           variant="filled"
           type="date"
+          defaultValue={currentVacation?.start_date.split("T")[0]}
           {...register("startDate", {
             required: true,
             validate: {
-              minDate: (value) => {
-                return value >= new Date().toISOString().split("T")[0];
-              },
               isBeforeEndDate: (value) => {
                 return value < getValues("endDate");
               }
@@ -150,9 +168,7 @@ function AddVacation() {
           color={errors.startDate ? "error" : "default"}
           helperText={
             errors.startDate?.type === "required"
-              ? "Start Date is required"
-              : errors.startDate?.type === "minDate"
-              ? "Start Date must be after or equal to today"
+              ? "Start Date must be changed"
               : errors.startDate?.type === "isBeforeEndDate"
               ? "Start Date must be before End Date"
               : ""
@@ -162,6 +178,7 @@ function AddVacation() {
           label="End Date"
           variant="filled"
           type="date"
+          defaultValue={currentVacation?.end_date.split("T")[0]}
           {...register("endDate", {
             required: true,
             validate: {
@@ -173,7 +190,7 @@ function AddVacation() {
           color={errors.endDate ? "error" : "default"}
           helperText={
             errors.endDate?.type === "required"
-              ? "End Date is required"
+              ? "End Date must be changed"
               : errors.endDate?.type === "isAfterStartDate"
               ? "End Date must be after Start Date"
               : ""
@@ -183,6 +200,7 @@ function AddVacation() {
           label="Price"
           variant="filled"
           type="number"
+          defaultValue={currentVacation?.price}
           {...register("price", {
             required: true,
             validate: {
@@ -194,92 +212,66 @@ function AddVacation() {
           color={errors.price ? "error" : "default"}
           helperText={
             errors.price?.type === "required"
-              ? "Price is required"
+              ? "Price must be changed"
               : errors.price?.type === "priceIsPositive"
               ? "Price must be positive and less than 10,000"
               : ""
           }
         />
-        <label htmlFor="dropzone-file">Image:</label>
-        <div className="flex w-full items-center justify-center">
-          <Label
-            htmlFor="dropzone-file"
-            className="flex h-44 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-          >
-            {showImage ? (
+        <div>
+          <label htmlFor="dropzone-file">Image:</label>
+          <div className="flex w-full items-center justify-center">
+            <Label
+              htmlFor="dropzone-file"
+              className="flex h-44 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+            >
               <img
                 className="z-0 w-full h-full rounded-lg"
-                src={getValues("image")}
-                alt=""
+                src={
+                  !imageChanged ? currentVacation?.image : getValues("image")
+                }
+                alt={currentVacation?.destination}
               />
-            ) : (
-              <div className="flex flex-col items-center justify-center pb-6 pt-5">
-                <svg
-                  className="mb-4 h-8 w-8 text-gray-500 dark:text-gray-400"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 20 16"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                  />
-                </svg>
-                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                  <span className="font-semibold">Click to upload</span>
-                </p>
-              </div>
-            )}
-            <FileInput
-              id="dropzone-file"
-              className="hidden"
-              {...register("image", {
-                onChange: handleUploadImage,
-                validate: {
-                  isNotEmpty: (value) => {
-                    return value.length > 0;
-                  }
-                },
-                value: getValues("image")
-              })}
-              color={
-                errors.image?.type === "isNotEmpty" ? "failure" : "default"
-              }
-              helperText={
-                errors.image?.type === "isNotEmpty" ? "Image is required" : ""
-              }
-            />
-          </Label>
+
+              <FileInput
+                id="dropzone-file"
+                className="hidden"
+                defaultValue={currentVacation?.image}
+                {...register("image", {
+                  onChange: handleUploadImage,
+                  value: getValues("image")
+                })}
+              />
+            </Label>
+          </div>
         </div>
         <Button
           className="dark:bg-gray-800"
           type="submit"
           gradientDuoTone="purpleToBlue"
           outline
-          disabled={addVacationLoading || addVacationSuccess}
+          disabled={updateVacationLoading || updateVacationSuccess}
         >
-          {addVacationLoading || addVacationSuccess ? (
+          {updateVacationLoading || updateVacationSuccess ? (
             <Spinner size="sm" />
           ) : (
-            "Add Vacation"
+            "Update Vacation"
           )}
         </Button>
         <HR className="p-0 m-0 bg-blue-300 dark:bg-blue-700" />
-        {addVacationSuccess && (
+        {updateVacationSuccess && (
           <Toast color="success">
             <Spinner size="sm" />
-            Vacation Added Successfully, redirecting to vacations page...
+            Vacation Updated Successfully, redirecting to vacations page...
             <Toast.Toggle />
           </Toast>
         )}
-        {addVacationError && <Alert color="failure">{addVacationError}</Alert>}
+        {updateVacationError && (
+          <Alert color="failure">{updateVacationError}</Alert>
+        )}
       </form>
     </motion.div>
   );
 }
 
-export default AddVacation;
+export default UpdateVacation;

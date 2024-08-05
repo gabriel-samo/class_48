@@ -3,6 +3,24 @@ import { Query } from "../DAL/dal_mysql";
 import { VacationModel } from "../models/vacation";
 import moment from "moment";
 
+export const getVacationById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    const vacation = await Query(
+      "SELECT * FROM vacations WHERE vacation_id = ?",
+      [id]
+    );
+    return res.status(200).json(vacation);
+  } catch (error: any) {
+    console.log(error);
+    return res.status(500).json(error.message);
+  }
+};
+
 export const getAllVacations = async (
   req: Request,
   res: Response,
@@ -129,6 +147,125 @@ export const getActiveVacations = async (
     return res
       .status(200)
       .json({ vacations, totalRows: totalRows[0]["totalRows"] });
+  } catch (error: any) {
+    console.log(error);
+    return res.status(500).json(error.message);
+  }
+};
+
+export const addVacation = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const isAdmin = req.currentUser?.isAdmin;
+    if (!isAdmin) {
+      return res
+        .status(403)
+        .json("Unauthorized, only admins can add vacations");
+    }
+    const { destination, description, image, startDate, endDate, price } =
+      req.body;
+    if (
+      !destination ||
+      !description ||
+      !image ||
+      !startDate ||
+      !endDate ||
+      !price
+    ) {
+      return res.status(400).json("Missing required fields");
+    }
+    const vacation = {
+      destination,
+      description,
+      image,
+      start_date: startDate,
+      end_date: endDate,
+      price
+    };
+    const result = await Query("INSERT INTO vacations SET ?", vacation);
+    if (result.affectedRows === 0) {
+      return res.status(400).json("Failed to add vacation");
+    } else {
+      return res.status(200).json(result);
+    }
+  } catch (error: any) {
+    console.log(error);
+    return res.status(500).json(error.message);
+  }
+};
+
+export const updateVacation = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const isAdmin = req.currentUser?.isAdmin;
+    if (!isAdmin) {
+      return res
+        .status(403)
+        .json("Unauthorized, only admins can update vacations");
+    }
+    const { id } = req.params;
+    const { destination, description, image, startDate, endDate, price } =
+      req.body;
+    if (
+      !destination ||
+      !description ||
+      !image ||
+      !startDate ||
+      !endDate ||
+      !price
+    ) {
+      return res.status(400).json("Missing required fields");
+    }
+    const vacation = {
+      destination,
+      description,
+      image,
+      start_date: startDate,
+      end_date: endDate,
+      price
+    };
+    const result = await Query("UPDATE vacations SET ? WHERE vacation_id = ?", [
+      vacation,
+      id
+    ]);
+    if (result.affectedRows === 0) {
+      return res.status(400).json("Failed to update vacation");
+    } else {
+      return res.status(200).json(result);
+    }
+  } catch (error: any) {
+    console.log(error);
+    return res.status(500).json(error.message);
+  }
+};
+
+export const deleteVacation = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    const isAdmin = req.currentUser?.isAdmin;
+    if (!isAdmin) {
+      return res
+        .status(403)
+        .json("Unauthorized, only admins can delete vacations");
+    }
+    const result = await Query("DELETE FROM vacations WHERE vacation_id = ?", [
+      id
+    ]);
+    if (result.affectedRows === 0) {
+      return res.status(400).json("Failed to delete vacation");
+    } else {
+      return res.status(200).json(result);
+    }
   } catch (error: any) {
     console.log(error);
     return res.status(500).json(error.message);

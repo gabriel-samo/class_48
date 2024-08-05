@@ -16,6 +16,7 @@ function Vacations() {
   const [isLoading, setIsLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [wasDeleted, setWasDeleted] = useState(false);
   const [vacations, setVacations] = useState<Vacation[]>([]);
   const [currentFilter, setCurrentFilter] = useState<
     "followed" | "all" | "not-started" | "active"
@@ -35,6 +36,7 @@ function Vacations() {
         }`
       )
       .then((res) => {
+        // console.log(res);
         setTotalPages(Math.ceil(res.data.totalRows / 9));
         setVacations(res.data.vacations);
         setTimeout(() => {
@@ -44,7 +46,7 @@ function Vacations() {
       .catch((error: any) => {
         console.error("Something went wrong:\n" + error);
       });
-  }, [currentPage, currentFilter]);
+  }, [currentPage, currentFilter, wasDeleted]);
 
   return (
     <div>
@@ -118,7 +120,7 @@ function Vacations() {
         />
       </div>
 
-      {vacations.length > 0 && (
+      {vacations && vacations.length > 0 && (
         <motion.div
           variants={container}
           initial="hidden"
@@ -138,7 +140,11 @@ function Vacations() {
                   animate="visible"
                   key={vacation.vacation_id}
                 >
-                  <VacationCard vacation={vacation} />
+                  <VacationCard
+                    vacation={vacation}
+                    wasDeleted={wasDeleted}
+                    setWasDeleted={setWasDeleted}
+                  />
                 </motion.div>
               ))}
         </motion.div>
