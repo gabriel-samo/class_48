@@ -13,6 +13,7 @@ import PrivateRoute from "../components/PrivateRoute";
 
 import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
+import Reports from "../pages/Reports";
 
 function AppRoutes() {
   // Scroll restoration
@@ -34,6 +35,7 @@ function AppRoutes() {
         <Route element={<AdminRoutes />}>
           <Route path="/add-vacation" element={<AddVacation />} />
           <Route path="/update-vacation/:id" element={<UpdateVacation />} />
+          <Route path="/reports" element={<Reports />} />
         </Route>
         <Route path="*" element={<Page404 />} />
       </Routes>

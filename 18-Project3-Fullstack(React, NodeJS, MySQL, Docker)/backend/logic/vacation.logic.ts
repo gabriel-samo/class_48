@@ -271,3 +271,25 @@ export const deleteVacation = async (
     return res.status(500).json(error.message);
   }
 };
+
+export const getReports = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.currentUser?.isAdmin) {
+      return res.status(403).json("Unauthorized, only admins can get reports");
+    }
+    const reports = await Query(
+      `SELECT v.destination, COUNT(f.vacation_id) AS followers 
+      FROM vacations AS v 
+      LEFT JOIN follows AS f ON v.vacation_id = f.vacation_id
+      GROUP BY v.destination`
+    );
+    return res.status(200).json(reports);
+  } catch (error: any) {
+    console.log(error);
+    return res.status(500).json(error.message);
+  }
+};

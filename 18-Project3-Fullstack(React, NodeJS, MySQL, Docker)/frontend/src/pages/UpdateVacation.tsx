@@ -219,7 +219,7 @@ function UpdateVacation() {
           }
         />
         <div>
-          <label htmlFor="dropzone-file">Image:</label>
+          <Label htmlFor="dropzone-file">Image:</Label>
           <div className="flex w-full items-center justify-center">
             <Label
               htmlFor="dropzone-file"
@@ -245,6 +245,7 @@ function UpdateVacation() {
             </Label>
           </div>
         </div>
+        <HR className="p-0 m-0 bg-blue-300 dark:bg-blue-700" />
         <Button
           className="dark:bg-gray-800"
           type="submit"
@@ -258,7 +259,9 @@ function UpdateVacation() {
             "Update Vacation"
           )}
         </Button>
-        <HR className="p-0 m-0 bg-blue-300 dark:bg-blue-700" />
+        <Button outline color="gray" onClick={() => navigate("/vacations")}>
+          Cancel
+        </Button>
         {updateVacationSuccess && (
           <Toast color="success">
             <Spinner size="sm" />

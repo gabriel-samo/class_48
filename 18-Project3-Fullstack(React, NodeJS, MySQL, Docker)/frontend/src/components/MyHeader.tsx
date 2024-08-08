@@ -3,7 +3,7 @@ import { FiSun } from "react-icons/fi";
 import { FaMoon } from "react-icons/fa";
 import { AiOutlineSearch } from "react-icons/ai";
 import { logoutUser } from "../redux/slices/userSlice";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { toggleTheme } from "../redux/slices/themeSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import {
@@ -14,12 +14,17 @@ import {
   TextInput,
   Tooltip
 } from "flowbite-react";
+import { decodeToken } from "react-jwt";
 
 export default function MyHeader() {
-  const dispatch = useAppDispatch();
-  const path = useLocation().pathname;
   const { theme } = useAppSelector((state) => state.theme);
   const currentUser = useAppSelector((state) => state.currentUser);
+  const isAdmin = decodeToken<{ isAdmin: boolean }>(currentUser.token)?.isAdmin;
+
+  const path = useLocation().pathname;
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   const handleThemeToggle = () => dispatch(toggleTheme());
   const handleSignout = () => dispatch(logoutUser());
 
@@ -66,6 +71,11 @@ export default function MyHeader() {
                 {currentUser.email}
               </span>
             </Dropdown.Header>
+            {isAdmin && (
+              <Dropdown.Item as={NavLink} to="/reports">
+                Reports
+              </Dropdown.Item>
+            )}
             <Dropdown.Item
               className="text-red-500 dark:text-red-600"
               onClick={handleSignout}

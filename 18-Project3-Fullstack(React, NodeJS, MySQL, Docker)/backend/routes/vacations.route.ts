@@ -8,7 +8,8 @@ import {
   addVacation,
   updateVacation,
   getVacationById,
-  deleteVacation
+  deleteVacation,
+  getReports
 } from "../logic/vacation.logic";
 
 const vacationsRouter = Router();
@@ -18,6 +19,7 @@ vacationsRouter.get("/all", checkToken, getAllVacations);
 vacationsRouter.get("/followed", checkToken, getFollowedVacations);
 vacationsRouter.get("/not-started", checkToken, getNotStartedVacations);
 vacationsRouter.get("/active", checkToken, getActiveVacations);
+vacationsRouter.get("/reports", checkToken, getReports);
 
 vacationsRouter.post("/new", checkToken, addVacation);
 vacationsRouter.post("/update/:id", checkToken, updateVacation);

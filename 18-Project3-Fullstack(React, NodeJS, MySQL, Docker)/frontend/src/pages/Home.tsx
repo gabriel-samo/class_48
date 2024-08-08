@@ -15,7 +15,7 @@ function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isExpired(currentUser.token.split(" ")[1])) {
+    if (currentUser.token && isExpired(currentUser.token.split(" ")[1])) {
       dispatch(logoutUser());
     }
   }, []);

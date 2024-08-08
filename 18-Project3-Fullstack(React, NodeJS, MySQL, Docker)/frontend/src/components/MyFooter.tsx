@@ -21,7 +21,7 @@ function MyFooter() {
             <div>
               <Footer.Title title="about" />
               <Footer.LinkGroup col>
-                <Footer.Link href="#">About Me</Footer.Link>
+                <Footer.Link href="/about">About Me</Footer.Link>
               </Footer.LinkGroup>
             </div>
             <div>
@@ -48,7 +48,7 @@ function MyFooter() {
         <Footer.Divider />
         <div className="w-full sm:flex sm:items-center sm:justify-between">
           <Footer.Copyright
-            href="#"
+            href="."
             by="Gabriel's Project 3"
             year={new Date().getFullYear()}
           />
