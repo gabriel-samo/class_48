@@ -1,11 +1,11 @@
 import cors from "cors";
 import express from "express";
-import { config } from "./config";
-import imagesRouter from "./routes/images.route";
 import usersRouter from "./routes/users.route";
-import vacationsRouter from "./routes/vacations.route";
+import imagesRouter from "./routes/images.route";
 import followsRouter from "./routes/follows.route";
-import moment from "moment";
+import vacationsRouter from "./routes/vacations.route";
+
+import { config } from "./config";
 
 // Create express app
 const app = express();

@@ -1,24 +1,31 @@
 import bcrypt from "bcryptjs";
 import { Query } from "../DAL/dal_mysql";
-import { NextFunction, Request, Response } from "express";
 import { createToken } from "../utils/createToken";
+import { NextFunction, Request, Response } from "express";
 
+// Function to check if an email is already taken
 export const emailTaken = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
+    // Destructure request body
     const { email } = req.body;
+    // Query database for existing user
     const foundUser = await Query("SELECT * FROM users WHERE email = ?", [
       email
     ]);
+    // Check if user exists
     if (foundUser.length > 0) {
+      // Return true if user exists
       return res.status(200).json(true);
     } else {
+      // Return false if user does not exist
       return res.status(200).json(false);
     }
   } catch (error: any) {
+    // Log error and return 500 status with error message
     console.log(error);
     return res.status(500).json(error.message);
   }
@@ -78,7 +85,7 @@ export const registerUser = async (
       ]);
       // Exclude password from response
       const { password, ...restCreds } = newUser[0];
-      // Return success response with token
+      // Return success response with token in header and user details in body
       return res.status(200).header("Authorization", token).json({
         id: restCreds.user_id,
         email: restCreds.email,
@@ -87,8 +94,8 @@ export const registerUser = async (
       });
     }
   } catch (error: any) {
+    // Log error and return 500 status with error message
     console.log(error);
-    // Return error response on exception
     return res.status(500).json(error.message);
   }
 };
@@ -149,8 +156,8 @@ export const loginUser = async (
       });
     }
   } catch (error: any) {
+    // Log error and return 500 status with error message
     console.log(error);
-    // Return error response on exception
     return res.status(500).json(error.message);
   }
 };

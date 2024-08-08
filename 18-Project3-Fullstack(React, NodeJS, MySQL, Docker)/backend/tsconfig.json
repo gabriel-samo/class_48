@@ -1,19 +1,35 @@
 {
+  // Compiler options for the TypeScript compiler
   "compilerOptions": {
+    // Generate source maps for debugging to map TypeScript code to JavaScript
     "sourceMap": true,
+    // Target ES2022 standard to ensure compatibility with modern JavaScript engines
     "target": "ES2022",
+    // Use commonjs module system to use import/export syntax
     "module": "commonjs",
+    // Enable strict mode to catch common errors
     "strict": true,
+    // Use node module resolution to resolve module paths
     "moduleResolution": "node",
+    // Output directory for compiled JavaScript files
     "outDir": "./dist",
+    // Enable ES module interop to use ES modules in Node.js
     "esModuleInterop": true,
+    // Skip library checking to improve build performance
     "skipLibCheck": true,
+    // Enforce consistent casing in file names to avoid errors
     "forceConsistentCasingInFileNames": true,
+    // Root directory for source files
     "rootDir": "./",
+    // Enable JSON module resolution to use JSON files in TypeScript
     "resolveJsonModule": true,
+    // Types to include
     "types": ["node"],
+    // Types to include
     "typeRoots": ["./node_modules/@types"]
   },
+  // Include all files in the project to compile
   "include": ["./**/*"],
+  // Exclude node_modules from the compilation
   "exclude": ["node_modules"]
 }
