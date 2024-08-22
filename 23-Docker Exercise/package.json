@@ -1,0 +1,20 @@
+{
+  "name": "23-docker-exercise",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "watch:server": "cd backend && npm run dev",
+    "watch:client": "cd frontend && npm run dev",
+    "dev": "npm-run-all --parallel watch:*",
+    "docker:server": "docker run -p 8080:8080 --name gb-backend gabrielsamo/docker-exercise:gb-backend",
+    "docker:client": "docker run -p 5173:5173 --name gb-frontend gabrielsamo/docker-exercise:gb-frontend",
+    "docker": "npm-run-all --parallel docker:*"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}

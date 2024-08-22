@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Song Generator</title>
+    <link rel="stylesheet" href="style/stlye.css" />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"
+    ></script>
+    <script defer src="js/app.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="title">Song Generator</div>
+      <div class="description">
+        <textarea
+          id="description"
+          placeholder="Enter your song description"
+        ></textarea>
+      </div>
+      <button id="generate">Generate</button>
+      <div id="results">
+        <div id="result1"></div>
+        <div id="result2"></div>
+      </div>
+    </div>
+  </body>
+</html>

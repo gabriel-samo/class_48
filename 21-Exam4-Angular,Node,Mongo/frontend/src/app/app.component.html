@@ -1,0 +1,155 @@
+<main class="bg-dark min-vh-100">
+  <div class="container d-flex flex-column align-items-center gap-5">
+    <h1 class="text-center text-primary">Exam 4 - Bank Account App</h1>
+    <div
+      class="row w-50 mx-auto d-flex justify-content-center align-items-center gap-3"
+    >
+      <form class="d-flex gap-2">
+        <label for="accountNumber" class="form-label text-primary"
+          >Account Number:</label
+        >
+        <input
+          id="accountNumber"
+          name="accountNumber"
+          class="form-control"
+          type="number"
+          [(ngModel)]="accountNumber"
+          placeholder="Enter Account Number"
+        />
+      </form>
+      <button
+        class="btn btn-primary"
+        type="submit"
+        (click)="getAccountActions()"
+      >
+        Get Account Actions
+      </button>
+    </div>
+    @if (accountActions.length > 0) {
+    <div class="row w-75 mx-auto">
+      <table class="table table-dark table-striped-columns table-bordered">
+        <thead class="text-primary">
+          <tr>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Interest</th>
+            <th>Payments</th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider">
+          @for (action of accountActions; track action._id) {
+          <tr>
+            <td>{{ action.type }}</td>
+            <td>{{ action[action.type].amount }}</td>
+            <td>
+              {{ action[action.type].date | date : "dd/MM/yyyy HH:mm:ss" }}
+            </td>
+            <td>
+              {{
+                action[action.type].interest
+                  ? action[action.type].interest
+                  : "-"
+              }}
+            </td>
+            <td>
+              {{
+                action[action.type].numberOfPayments
+                  ? action[action.type].numberOfPayments
+                  : "-"
+              }}
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    }
+    <div
+      class="row w-50 mx-auto d-flex justify-content-center align-items-center gap-3"
+    >
+      <button class="btn btn-primary" (click)="startAddAction()">
+        Add Account Action
+      </button>
+    </div>
+    @if (isAddingAction) {
+    <div class="row w-50 mx-auto mb-10">
+      <form
+        class="d-flex flex-column gap-2 border border-primary rounded-3 p-3"
+      >
+        <label for="accountNumber" class="form-label text-primary"
+          >Account Number:</label
+        >
+        <input
+          id="accountNumber"
+          name="accountNumber"
+          class="form-control"
+          type="number"
+          [(ngModel)]="accountNumber"
+          placeholder="Enter Account Number"
+        />
+        <div class="d-flex flex-column gap-2">
+          <label for="type" class="form-label text-primary">Type:</label>
+          <select name="type" class="form-control" [(ngModel)]="type">
+            <option value="deposit">Deposit</option>
+            <option value="withdraw">Withdraw</option>
+            <option value="loan">Loan</option>
+          </select>
+          <div class="d-flex flex-column gap-2">
+            @switch (type) { @case ('deposit') {
+            <label for="amount" class="form-label text-primary">Amount:</label>
+            <input
+              type="number"
+              name="amount"
+              class="form-control"
+              [(ngModel)]="amount"
+            />
+            } @case ('withdraw') {
+            <label for="amount" class="form-label text-primary">Amount:</label>
+            <input
+              type="number"
+              name="amount"
+              class="form-control"
+              [(ngModel)]="amount"
+            />
+            } @case ('loan') {
+            <label for="amount" class="form-label text-primary">Amount:</label>
+            <input
+              type="number"
+              name="amount"
+              class="form-control"
+              [(ngModel)]="amount"
+            />
+            <label for="interest" class="form-label text-primary"
+              >Interest:</label
+            >
+            <input
+              type="number"
+              name="interest"
+              class="form-control"
+              [(ngModel)]="interest"
+            />
+            <label for="numberOfPayments" class="form-label text-primary"
+              >Number of Payments:</label
+            >
+            <input
+              type="number"
+              name="numberOfPayments"
+              class="form-control"
+              [(ngModel)]="numberOfPayments"
+            />
+            } }
+          </div>
+        </div>
+        <button
+          class="btn btn-primary"
+          type="submit"
+          (click)="handleAddAccountAction()"
+        >
+          Add Account Action
+        </button>
+      </form>
+    </div>
+    }
+  </div>
+</main>
