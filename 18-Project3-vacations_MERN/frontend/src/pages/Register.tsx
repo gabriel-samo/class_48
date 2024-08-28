@@ -81,7 +81,7 @@ function Register() {
       variants={container}
       initial="hidden"
       animate="visible"
-      className="flex justify-center h-screen"
+      className="pt-10 flex justify-center h-screen"
     >
       <form
         onSubmit={handleSubmit(onSubmit)}

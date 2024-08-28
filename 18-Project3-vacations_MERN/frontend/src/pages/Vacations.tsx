@@ -50,7 +50,7 @@ function Vacations() {
 
   return (
     <div>
-      <div className="flex flex-col gap-4 justify-center items-center">
+      <div className="pt-14 flex flex-col gap-4 justify-center items-center">
         <h1 className="sm:text-8xl text-6xl font-bold">
           <i>Vacations</i>
         </h1>

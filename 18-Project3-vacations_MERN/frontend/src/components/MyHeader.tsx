@@ -1,19 +1,11 @@
 import logo from "../assets/vacation-log.png";
 import { FiSun } from "react-icons/fi";
 import { FaMoon } from "react-icons/fa";
-import { AiOutlineSearch } from "react-icons/ai";
 import { logoutUser } from "../redux/slices/userSlice";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { toggleTheme } from "../redux/slices/themeSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import {
-  Avatar,
-  Button,
-  Dropdown,
-  Navbar,
-  TextInput,
-  Tooltip
-} from "flowbite-react";
+import { Avatar, Button, Dropdown, Navbar, Tooltip } from "flowbite-react";
 import { decodeToken } from "react-jwt";
 
 export default function MyHeader() {
@@ -29,14 +21,14 @@ export default function MyHeader() {
   const handleSignout = () => dispatch(logoutUser());
 
   return (
-    <Navbar className="border-b-2 sticky top-0 z-50">
-      <NavLink
+    <Navbar className="fixed w-full top-0 z-50 bg-transparent dark:bg-transparent backdrop-blur-sm">
+      <Link
         to="/"
-        className="flex items-center justify-center whitespace-nowrap text-xs sm:text-xl font-semibold dark:text-white x"
+        className="flex items-center justify-center whitespace-nowrap text-xs sm:text-xl font-semibold dark:text-white hover:no-underline"
       >
         <img src={logo} alt="logo" className="w-10 h-10" />
         <span>Vacations</span>
-      </NavLink>
+      </Link>
       <div className="flex gap-2 md:order-2">
         <Button
           className="w-10 h-10"
@@ -93,14 +85,6 @@ export default function MyHeader() {
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>
-        <Navbar.Brand as={"form"} className="flex gap-4 md:my-4">
-          <TextInput
-            type="text"
-            placeholder="Search..."
-            rightIcon={AiOutlineSearch}
-            className="w-full"
-          />
-        </Navbar.Brand>
         <Navbar.Link
           as={NavLink}
           to="/"
@@ -122,7 +106,7 @@ export default function MyHeader() {
           to="/vacations"
           active={path === "/vacations"}
           className="h-full flex items-center"
-          disabled={!currentUser.token}
+          disabled={currentUser.token.length < 10}
         >
           {currentUser.token ? (
             "Vacations"

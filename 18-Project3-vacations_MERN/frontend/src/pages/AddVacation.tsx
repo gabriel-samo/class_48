@@ -93,7 +93,7 @@ function AddVacation() {
       variants={container}
       initial="hidden"
       animate="visible"
-      className="flex justify-center min-h-screen mb-10"
+      className="pt-10 flex justify-center min-h-screen mb-10"
     >
       <form
         onSubmit={handleSubmit(onSubmit)}

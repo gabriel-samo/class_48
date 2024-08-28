@@ -2,6 +2,7 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import About from "../pages/About";
 import Page404 from "../pages/Page404";
+import Reports from "../pages/Reports";
 import Register from "../pages/Register";
 import Vacations from "../pages/Vacations";
 import MyFooter from "../components/MyFooter";
@@ -13,7 +14,6 @@ import PrivateRoute from "../components/PrivateRoute";
 
 import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import Reports from "../pages/Reports";
 
 function AppRoutes() {
   // Scroll restoration

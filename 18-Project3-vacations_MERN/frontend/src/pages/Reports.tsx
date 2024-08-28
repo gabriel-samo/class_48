@@ -32,7 +32,7 @@ function Reports() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-200 dark:bg-gray-700">
+    <div className="pt-10 min-h-screen bg-gray-200 dark:bg-gray-700">
       <div className="flex flex-col items-center justify-center gap-4">
         <h1 className="mt-4 text-4xl font-bold text-center text-blue-600 dark:text-blue-200">
           Vacation Reports

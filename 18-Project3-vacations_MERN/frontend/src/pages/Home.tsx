@@ -22,14 +22,14 @@ function Home() {
 
   return (
     <div>
-      <div className="flex flex-col gap-4 items-center h-screen text-white">
+      <div className="pt-10 flex flex-col gap-4 items-center h-screen w-full text-white realtive">
         <motion.img
           variants={container}
           initial="hidden"
           animate="visible"
           src={vacationPhoto}
           alt="vacation photo"
-          className="absolute right-0 h-full w-full object-cover blur-sm"
+          className="absolute top-0 left-0 w-full h-full object-cover"
         />
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-gray-900 to-75%"></div>
         <motion.div
